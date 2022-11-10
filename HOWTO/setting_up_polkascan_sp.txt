@@ -1,0 +1,137 @@
+yum install docker
+service docker start
+
+#make sure firewall doesn't block docker ifs
+
+#READ THIS!
+https://github.com/polkascan/polkascan-os
+
+
+cd /opt/nvme/polkascan
+docker ps (empty?)
+
+#check mysql is starting alone
+docker-compose -p skypirl3 -f docker-compose.sp-public.yml up -d mysql
+
+#ok stop it and re-start the whole bang, including mysql
+
+docker-compose -p skypirl3 -f docker-compose.sp-public.yml up --build
+
+#Connection refused? that's right. Run an SP node with rpc-cors set to all:
+
+/opt/nvme/pirl_0.8.29_sp3robo --base-path /opt/nvme2/pirl7_sp3/ --listen-addr=/ip4/192.168.0.13/tcp/30333 --ws-port 9944 --rpc-port 9933 --validator --bootnodes /ip4/corfu/tcp/30334/p2p/12D3KooWM3bZjuNRgHWFZ85sQWwUkxUzqGgYExWhtUTq3vRZexRL --bootnodes /ip4/conti/tcp/30337/p2p/12D3KooWAPQYbo6TzWUSeB8bXbnKNRfwUfnPExauawmbiGX9cavH --telemetry-url 'wss://cube.room-house.com:8441/submit 0' --rpc-cors all --name Robotics
+
+#make sure Apache has this stuff in its config:
+
+######################
+#Polkascan for skypirl
+######################
+
+<VirtualHost _default_:8410>
+#polkascan workers look for it
+ServerAdmin alex@xter.tech
+
+ServerName cube.room-house.com
+
+SSLProxyEngine on
+SSLProxyVerify none
+SSLProxyCheckPeerCN off
+SSLProxyCheckPeerName off
+SSLProxyCheckPeerExpire off
+SSLProxyProtocol all -SSLv2 -SSLv3 -TLSv1
+
+  ProxyRequests on
+
+  #spval
+  ProxyPass / ws://localhost:9944/
+  ProxyPassReverse / ws://localhost:9944/
+
+RewriteEngine             On
+  RewriteCond ${HTTP:Upgrade} websocket [NC]
+  RewriteCond ${HTTP:Connection} upgrade [NC]
+  RewriteRule ^/?(.*) "ws://localhost:9944/$1" [P,L]
+##RewriteRule \.php.* - [F,L]
+
+SSLEngine on
+
+SSLCertificateFile "/etc/letsencrypt/archive/room-house.com/cert1.pem"
+SSLCertificateKeyFile "/etc/letsencrypt/archive/room-house.com/privkey1.pem"
+SSLCertificateChainFile "/etc/letsencrypt/archive/room-house.com/fullchain1.pem"
+
+SetEnvIf Request_URI "\.php.*?" no_log
+ErrorLog /dev/null
+CustomLog /dev/null common
+</VirtualHost>
+
+<VirtualHost _default_:8408>
+#polkascan stuff
+ServerAdmin alex@xter.tech
+
+ServerName cube.room-house.com
+
+Header always set Strict-Transport-Security "max-age=0; includeSubdomains;"
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Credentials   "true"
+Header set Access-Control-Max-Age "0"
+
+SSLProxyEngine on
+SSLProxyVerify none
+SSLProxyCheckPeerCN off
+SSLProxyCheckPeerName off
+SSLProxyCheckPeerExpire off
+SSLProxyProtocol all -SSLv2 -SSLv3 -TLSv1
+
+  ProxyRequests on
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} =websocket [NC]
+  RewriteRule /(.*)           ws://127.0.0.1:8080/$1 [P,L]
+  RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+  RewriteRule /(.*)           http://127.0.0.1:8080/$1 [P,L]
+
+
+  ProxyPass /polkadot http://127.0.0.1:8080/polkadot
+  ProxyPassReverse /polkadot http://127.0.0.1:8080/polkadot
+
+RewriteEngine             On
+RewriteRule \.php.* - [F,L]
+
+SSLEngine on
+
+SSLCertificateFile "/etc/letsencrypt/archive/room-house.com/cert1.pem"
+SSLCertificateKeyFile "/etc/letsencrypt/archive/room-house.com/privkey1.pem"
+SSLCertificateChainFile "/etc/letsencrypt/archive/room-house.com/fullchain1.pem"
+
+SetEnvIf Request_URI "\.php.*?" no_log
+ErrorLog /dev/null
+CustomLog /dev/null common
+</VirtualHost>
+
+##############
+
+Connect to the host with listening ports:
+
+ssh -lalex -L 5555:127.0.0.1:5555 -L 8080:127.0.0.1:8080 cube
+
+#run again
+docker-compose -p skypirl3 -f docker-compose.sp-public.yml up --build
+
+#if it's ok, you see a lot of such:
+
+vester-worker_1   | [2022-09-29 08:18:06,934: WARNING/ForkPoolWorker-1] . Skipped 0x0538e99c7714215df52d2ba81b993cd9db7f17bf4b5fae6c629af6edac38f4a7
+harvester-worker_1   | [2022-09-29 08:18:06,935: INFO/ForkPoolWorker-1] Task app.tasks.accumulate_block_recursive[545e3c86-ffdf-4216-8c66-8ccfc7491d58] succeeded in 0.24170426279306412s: {'result': '2 blocks added', 'lastAddedBlockHash': '0x0538e99c7714215df52d2ba81b993cd9db7f17bf4b5fae6c629af6edac38f4a7', 'sequencerStartedFrom': False}
+harvester-worker_1   | [2022-09-29 08:18:06,991: WARNING/ForkPoolWorker-4] + Added 0xaf18d0c58f33e6ad76761f41bbdfcaf2fd0a6ad93dec5b584f29b98449646e02
+harvester-worker_1   | [2022-09-29 08:18:07,047: WARNING/ForkPoolWorker-4] + Added 0xd783f2f15085401efab5e25cac4aa53ba2ec4401c20c0c7ddffb9512a75ec851
+harvester-worker_1   | [2022-09-29 08:18:07,106: WARNING/ForkPoolWorker-4] + Added 0xbc0a83b245e3365c00260d32d78c7a1d1d96eba735ffb6cfca9324c4c7c045b3
+harvester-worker_1   | [2022-09-29 08:18:07,257: WARNING/ForkPoolWorker-4] + Added 0x795cb7279b09e225e06618ddf2e90b632a5c8a2e1c998e0c3fa1fc42c120bba7
+
+#open in browser:
+
+http://127.0.0.1:8080/skypirl/harvester/admin
+
+#click the button to process old blocks
+
+#open task monitior:
+
+http://127.0.0.1:5555/
+
+#should be no errors

@@ -1,0 +1,12 @@
+        "Keys": {
+                "type": "struct",
+                "type_mapping": [
+                        ["grandpa", "AccountId"],
+                        ["babe", "AccountId"],
+                        ["im_online", "AccountId"],
+                        ["para_validator", "AccountId"],
+                        ["para_assignment", "AccountId"],
+                        ["authority_discovery", "AccountId"]
+                ]
+        }
+

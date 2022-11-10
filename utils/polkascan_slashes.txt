@@ -1,0 +1,585 @@
+SLASHES SKYPIRL	
+
+ERA: 529 block: 3789545, sum is 45326.88478191886 PIRL
+
+mysql> select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=3789545 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                              45326.88478191886 |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000, JSON_EXTRACT(attributes->"$[0]", "$.value") from data_event where block_id=3789545 and event_id='Slash';
++-----------------------------------------------------------+----------------------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 | JSON_EXTRACT(attributes->"$[0]", "$.value")                          |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+|                                           72.410029300577 |5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J | "0x1ec310fd45a6394098ec37eb0f6ced52f8d8abd9a1eae218de79a242c07d577b" |
+|                                          707.372600070557 |5F6S6upvFsPHPYASvJXYaX4nhFcetAh4ySNfYCJVYLeTQ828 | "0x8606283247e1fe220d49690121c435725ce21d2fb04cd02e0dbb6e1dbc155e7b" |
+|                                         4886.819721694535 |5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy | "0x647276cbff5cb1a6df5fd2b31cabb99993d66e415a10781c5eb971ee445e874e" |
+|                                           65.235582150375 |5E53NmqDGpQEHgTiPtjkoz8FMBBhidi7W2C5zz2eSpGSHckJ | "0x58ba2c8433d0ce6597f00f4f01391f857af6435a4fc301174d189e48ed73e40a" |
+|                                          709.130226588315 |5EM6GMayqnw59yXzKSPTR8tZKZyzTYw8D1UhKmg1cKThRKzc | "0x64f7d3a6b2ebb416e39e9723fa29a184a71954949d64e588770563714c3fa627" |
+|                                         4081.232924186318 |5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq | "0x2ee9ae9aebe17bec431e8b2b8639e1e9884e5679d18280f8cd737bd8b8b03803" |
+|                                           810.39139391165 |5DfhQT9QwEj9eFMgAFrW6CAPbiyE2mNgRvgGFofKhMQkEjcW | "0x46ec4d0c6bac9b8acb1adfc8547691ebb1c14d4ffb4de9aeb1243860542e461c" |
+|                                           76.120786270121 |5HdVK4twx9SoD6mJSiPCNMneo8Y5xkWK3UJub5Qekr5wL281 | "0xf62e093168ac91b12fe21510b76d7c82b5473a0d47770e7356da872812d24c4e" |
+|                                           709.00142436019 |5HL9eeZ7Vci7e1oe1xp8qCrJERXSf6S1VdBh9BPH81gfj15v | "0xe8f4acaa004af285d273153074097f6127e1a6565181d40530d6e3db195c570a" |
+|                                         2038.578267477809 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | "0xe876fe9bf4293c69a1039254cad43ee092dc38989ab1b747a57daa551eb73532" |
+|                                         2841.403824297628 |5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc | "0xec1393d2af9b00ff1e190bf0d16ddb2ad03c9dc606058300c93ff9cd79c1e53d" |
+|                                          142.546764167756 |5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf | "0xf6716441e9dbddd2303f9c6f50ac54b36686e149724e7b6125a75aac287bdc5b" |
+|                                          707.718697497137 |5GpRhfGw4HkJqbRa1XkaNHXHTPMjtX6HVeJut53Fc6uBFgKD | "0xd2495915354ba5a22fad1c60ad6306c3baabef3be1a969ffa8a1b59e056bb81e" |
+|                                         3494.011593256684 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | "0x442947386f819411318780777c147af2787fdcb700053dfa6d8fdb6f8f84327c" |
+|                                          1321.38551918822 |5DfhQT9QwEj9eFMgAFrW6CAPbiyE2mNgRvgGFofKhMQkEjcW | "0x46ec4d0c6bac9b8acb1adfc8547691ebb1c14d4ffb4de9aeb1243860542e461c" |
+|                                          848.198628535833 |5FUZx2HuAQAckiDJa6L5npEhdF8kMhf9W3fgNgMwZ3XBDqBC | "0x96e7f86ddecb2bf58c96028d30aa397b9dfcd4149c9bd265a37ed744fcddce00" |
+|                                          708.764145386623 |5GECZteraz4ucCY56HFmxz9UdVomGEKuuucosBMRZLkUaZeu | "0xb82eca99387d8c9f929deccf522d39bf863c4bf874d834485e1f7b955d18bc21" |
+|                                         4109.713092841617 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | "0x6c47f563659802f9a7ead71daae07e2c7fbce87a64ff3aa58c998ae1b0670b78" |
+|                                                63.5704839 |5CVY79wPGEpnerfUHXRkkyTbvYK4b6uE46BXYF4u1Uzwnb2e | "0x12f05018ea60ca70f52dc4523490ef46e74e825bb2711f3cc8e6ce24eafc4634" |
+|                                           708.72894682525 |5FNDVSXo3P7fYhmQyoY18ywZSNgct965ygPQmwzBxXnsg5F3 | "0x920fa112379735d402dc1d9c4087ccc2d3d4ea1b788f3067a2e50e4375d9533c" |
+|                                         2706.574851505142 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku | "0xb02bbb168a45b7cd045e3370207df4b3fcd2eb6596940780ae43b6376ff67070" |
+|                                         2187.747005416953 |5G22DkzrY2eWGqZ8E4gKbEZKX6sAGse4xNe4qCD2FUBhqVPL | "0xaee503dd303f6af3775625edcbe0fdc8a1e4ee86dc18aa48c928e481bd5f9d75" |
+|                                          159.357633963051 |5CajHU7obxxhCy8SRPkg6krKh94pyijBLcqmFnJ7tzYpf5Ri | "0x16e62af4619459e1dec31f5dd821c8960feee7b4142637d44937e9ebecb63936" |
+|                                          709.328512883823 |5CrXfoySoatkuAacNgGv2X6L2fGG8HKgLitjAz5Ld4RjR48F | "0x22f2fed2ae8ea712f00763a71e70201142305642b0e1b81a1ce8f1331c517119" |
+|                                          4796.73613699252 |5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V | "0xc64cafd7644a1efa627c065f7f552ba57048065c37b8d0e4c85253c50176ee4a" |
+|                                                  65.45882 |5EHgdxZC3BhoYANeHhAVZWKrxfF23pcZrDfBwpDVTuLrCHB4 | "0x625e8d9cc44dab234dae433007529278636fcf52d6d839ab8686dc855113d871" |
+|                                          708.197403159941 |5DSLTJxnTSrAJir4K1zmZZh3hmxasPd5sPpeJD2D1zjAoA4K | "0x3cbb95977a283db4e3b41638a280ae3b683aa8a63cd0b35a2dca5fe91986935a" |
+|                                         4891.149766090229 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | "0xe876fe9bf4293c69a1039254cad43ee092dc38989ab1b747a57daa551eb73532" |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+28 rows in set (0.00 sec)
+
+==========================
+==========================
+==========================
+==========================
+
+ERA: 527 block: 3762160, sum is 5372.470411375893 PIRL
+
+mysql> select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=3762160 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                              5372.470411375893 |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000, JSON_EXTRACT(attributes->"$[0]", "$.value") from data_event where block_id=3762160 and event_id='Slash';
++-----------------------------------------------------------+----------------------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 | JSON_EXTRACT(attributes->"$[0]", "$.value")                          |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+|                                            1.226387697217 |5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq | "0xfe34e06c8b71c7f78fd0ae0760b1256f6da9181f21c77d9cc3f79bd95e54b12e" |
+|                                          212.448944833825 |5CoaVe5UkrayyXSADwFqoWZ2cPcMhAQ344B5MX2RQ8xdUR5q | "0x20b2c48de4285fde357b29f4001887eeae3696865c48fab6cdd600097c750e7f" |
+|                                          279.831612284982 |5DRnQzfeSVnVP9Rm1PtkrDLXtUPvu3VHwKscL2m17izXf654 | "0x3c4fba7555d062c6e3730d236226347bf85f729f83ff4fa94f1cfd483ad9e101" |
+|                                          1727.84777214407 |5GsQxJr6Nsuuy1t4SuZFYyH8yfayeS7gxmHy8qNLapos87KE | "0xd490916b6dd4fb14ad9810b154dda7c75cecf9fcd580d296882edacefb7f786f" |
+|                                           13.304065148092 |5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi | "0x94b7427abdadf6f4a8089b56758dfe021aa7450c93bc07b86144ae6f75c71b4a" |
+|                                         1237.228739422229 |5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG | "0x3ca34313ea2aaad32873b3e5f6f38122fe9704dd4eac6a942e2a6e745e47d406" |
+|                                          224.815342469018 |5HTsyLYrhFCeJucLBMbQ4NhJ8usp1JZbPKJzYZUqrQwDZfQe | "0xeed9dc94676cf8b46b5b1172e0e16e04943db306a94552f3f9ba43939663d231" |
+|                                           15.311070176467 |5HanHWVw1By1Gkj6DfSK53uCGk5rc3FtknQ8UA3cHCZAEtLg | "0xf41d6fb3f5c5a1c1648bc7ffaffcb00baa16de6c8e779392bac5b5e7cf890805" |
+|                                         1208.224976674751 |5CP538H1c5yj5E63S2Jnckkwt4udy1XDqgDWsGXskCRcrMsf | "0x0e01b76e8cc6b9abd93a72b5ca1a20dd48c8257cd7007391553b7cc3eaae0c26" |
+|                                          216.177956041221 |5DZNny5J63qZbDqiM6qwbmmUTf9Crzt8DyyqoijE7wAS84mJ | "0x421a2cf862f84b78a9c19ee6f610756ac43bf406f37c4683e2329b8217ae6b46" |
+|                                           15.191390756893 |5DcZiwYyXdXRZ5YBH9KEegqnNHa98ySfwdaVgw3TLkXsKw13 | "0x4488b51e7eb40c97da84e7feb48d6e3b4033918c505bc56f999fa055a719fc07" |
+|                                          220.862153727128 |5GKs8j7UhiAJ2TFxcMqbxXe5G39sdybSPqQj82KXxGgf3iQz | "0xbc80d7f5453bba12ac453fa00ba79416e20272f3d2fff0c11a5464560d65b74a" |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+12 rows in set (0.00 sec)
+
+==========================
+==========================
+==========================
+==========================
+
+ERA 497: block 3369133, sum is 81591.764378776 PIRL
+
+select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=3369133 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                                81591.764378776 |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 from data_event where block_id=3369133 and event_id='Slash';
+
+mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 from data_event where block_id=3369133 and event_id='Slash';
++-----------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 |
++-----------------------------------------------------------+
+|                                                  61.06023 |5CVY79wPGEpnerfUHXRkkyTbvYK4b6uE46BXYF4u1Uzwnb2e
+|                                         5662.962334366947 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku
+|                                           124.53935536354 |5EM76GfCst2SfkFfabU2mnLsovVY9DVFNneBa8Bi4mo235R1
+|                                          104.198359163222 |5H9MpiZEYQHwg3VYnDcscQH4X8a796ruD1BpME66u2Hnxd3D
+|                                          209.527183274288 |5Dq2jsKyZ9n27NMvpnyDJ1QjgwoRuuHyPKpdLJjEj39NbzRs
+|                                         1697.173509679182 |5HjgAXNTcCr6bwZ3z7ru4VzBm7YWYPHycKgEKFEup5qzSuhF
+|                                         1256.895588961066 |5EnV2rATiceqa6zpFzfhhwnVJdzddAzvrt5bdqJm2jxyzTSK
+|                                          176.255136699517 |5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG
+|                                         36677.17111974412 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                           73.114949459028 |5HdVK4twx9SoD6mJSiPCNMneo8Y5xkWK3UJub5Qekr5wL281
+|                                         7270.139104960773 |5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc
+|                                          814.705192830576 |5FUZx2HuAQAckiDJa6L5npEhdF8kMhf9W3fgNgMwZ3XBDqBC
+|                                         7104.453219866002 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                          147.972419551304 |5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf
+|                                         5296.881607784115 |5GsQxJr6Nsuuy1t4SuZFYyH8yfayeS7gxmHy8qNLapos87KE
+|                                                    62.874 |5EHgdxZC3BhoYANeHhAVZWKrxfF23pcZrDfBwpDVTuLrCHB4
+|                                         6870.465948833107 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY
+|                                          165.423149442613 |5CajHU7obxxhCy8SRPkg6krKh94pyijBLcqmFnJ7tzYpf5Ri
+|                                         4006.670259566985 |5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG
+|                                           67.718597387932 |5E53NmqDGpQEHgTiPtjkoz8FMBBhidi7W2C5zz2eSpGSHckJ
+|                                         3606.567757251074 |5CP538H1c5yj5E63S2Jnckkwt4udy1XDqgDWsGXskCRcrMsf
+|                                           75.166120381222 |5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J
+|                                           59.829234209402 |5HTsyLYrhFCeJucLBMbQ4NhJ8usp1JZbPKJzYZUqrQwDZfQe
++-----------------------------------------------------------+
+23 rows in set (0.00 sec)
+
+
+==========================
+==========================
+==========================
+==========================
+
+ERA 481: block 3150115, sum is 115916.81719132126 PIRL
+
+select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=3150115 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                             115916.81719132126 |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 from data_event where block_id=3150115 and event_id='Slash';
+
++-----------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 |
++-----------------------------------------------------------+
+|                                           75.242885986591 |5E53NmqDGpQEHgTiPtjkoz8FMBBhidi7W2C5zz2eSpGSHckJ
+|                                        14720.717995320916 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                                   30.2715 |5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av
+|                                         6915.882608960393 |5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j
+|                                          216.766080866191 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE
+|                                          461.330347785627 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                          183.803499380681 |5CajHU7obxxhCy8SRPkg6krKh94pyijBLcqmFnJ7tzYpf5Ri
+|                                         1376.456498198839 |5EnV2rATiceqa6zpFzfhhwnVJdzddAzvrt5bdqJm2jxyzTSK
+|                                          193.021928753968 |5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG
+|                                        13042.394377722516 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                                58.8097125 |5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp
+|                                         3784.773737451184 |5Hg6qW3DXZJhNvsz6bmaz37XeAa8fnHy8fx86iYx2GyYhxt2
+|                                         3042.012010895256 |5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V
+|                                         2338.474499006673 |5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq
+|                                            58.88135952284 |5DcZiwYyXdXRZ5YBH9KEegqnNHa98ySfwdaVgw3TLkXsKw13
+|                                        12767.284070452093 |5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf
+|                                            4.753440686887 |5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq
+|                                         4560.948107590336 |5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG
+|                                         6858.032000706027 |5GEZCgmTQMn32Y8dbz93BBrm6zDwnv8H6HXZnJpvqZuYAsF5
+|                                                 60.421914 |5Et1em2DPr8cNQKMMkAryByEzUjGNtS9jkxopgCZkLffCjgZ
+|                                         6765.785345719172 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku
+|                                          797.407680301753 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                                    60.543 |5HDpKEgBWNnHsujXoAbmGkXf8NY8scDwGFttRG6VgTKtNgQS
+|                                          1960.19811495967 |5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc
+|                                         4315.471633096764 |5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy
+|                                           51.566143984853 |5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi
+|                                          8505.85550407442 |5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R
+|                                                    60.543 |5HR4xLmgmhX5Q2uJWcUCYqSNNM8wmX7gNBwamqEjF3JtiyeR
+|                                         1543.593697719179 |5DRnQzfeSVnVP9Rm1PtkrDLXtUPvu3VHwKscL2m17izXf654
+|                                         3188.434346752174 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY
+|                                           83.517911534691 |5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J
+|                                         1542.883653105051 |5GKs8j7UhiAJ2TFxcMqbxXe5G39sdybSPqQj82KXxGgf3iQz
+|                                         4709.176828036571 |5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy
+|                                          164.413799501448 |5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf
+|                                         7470.336251149964 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE
+|                                            59.34523324212 |5HanHWVw1By1Gkj6DfSK53uCGk5rc3FtknQ8UA3cHCZAEtLg
+|                                         3887.466472356426 |5DV4i2V7gx3HRGrNjbz9LmUdDjwG7MqFiVrsUZVVqrZHdFf7
++-----------------------------------------------------------+
+
+==========================
+==========================
+==========================
+==========================
+
+HASHES of TX (refund 60 slashes of eras 497 and 481 on 12/04/2022)
+
+people=# select sum, blockhash, address, id from unslash where status is not null order by id;
+        sum         |                             blockhash                              |                     address                      | id 
+--------------------+--------------------------------------------------------------------+--------------------------------------------------+----
+           61.06023 | 0xf38621733e089ab2eefd62ec700c82885ee331c9d90bc5639feb66062bac167b | 5CVY79wPGEpnerfUHXRkkyTbvYK4b6uE46BXYF4u1Uzwnb2e |  1
+  5662.962334366947 | 0x63a3a79b7ba5db019e28e946054a08144517f7b9b703cd9c73c6dd46a2a45b6f | 5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku |  2
+    124.53935536354 | 0xf9372111028febd8aac1cfb1e8618a65ed1ea962a30cf53d2af1e4e92088c544 | 5EM76GfCst2SfkFfabU2mnLsovVY9DVFNneBa8Bi4mo235R1 |  3
+   104.198359163222 | 0x1006eddc6c40ed00423ad548575fe96b1cdf538415bc180451eb2251cce53ef2 | 5H9MpiZEYQHwg3VYnDcscQH4X8a796ruD1BpME66u2Hnxd3D |  4
+   209.527183274288 | 0xc44c2e144ba9d1bdb9daf0959b1a455f16920272a3d9438b8b6d7edcde1118e0 | 5Dq2jsKyZ9n27NMvpnyDJ1QjgwoRuuHyPKpdLJjEj39NbzRs |  5
+  1697.173509679182 | 0xeb12ee69dcd9b3b7f72b335d44d0ccf1c28355629cc85d4afb6c4dd55142fd63 | 5HjgAXNTcCr6bwZ3z7ru4VzBm7YWYPHycKgEKFEup5qzSuhF |  6
+  1256.895588961066 | 0x1a70efdbf6113ace054a6377b9a7b8c550f90495718c7b96923f04eabd3098ac | 5EnV2rATiceqa6zpFzfhhwnVJdzddAzvrt5bdqJm2jxyzTSK |  7
+   176.255136699517 | 0x87760a715aece68cc53576b392b09d9ab38ba023716c68184c7c588fc25c88a8 | 5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG |  8
+  36677.17111974412 | 0x37f199873e686aa80550be8f580312ccfd5c0eb51465fe588af24db0d83b471d | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn |  9
+    73.114949459028 | 0x70bc4bf794010f122f35fc6d2042f4cdd194d419577ee36e6ba56d62bf3a34dc | 5HdVK4twx9SoD6mJSiPCNMneo8Y5xkWK3UJub5Qekr5wL281 | 10
+  7270.139104960773 | 0xf7ece6d3f151d748dc123a3536931449743b0ae3bac278d6237e39b087f88345 | 5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc | 11
+   814.705192830576 | 0x3d0061c352ab9233b55fad486a78bcadd6c4c01a1b653fc2d37512113254f9c0 | 5FUZx2HuAQAckiDJa6L5npEhdF8kMhf9W3fgNgMwZ3XBDqBC | 12
+  7104.453219866002 | 0xdca256a820f37392202d00d3cdfebc23d45bac9aabf5bfa81ab06632e3892882 | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | 13
+   147.972419551304 | 0x7c9ef8c79e2423f5df4e0d0138424b2ba04d357506163cc389800566912b20c5 | 5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf | 14
+  5296.881607784115 | 0xe543d6495dda87f98a8ff7dcba6990986653ef88c3792f41c208226b3196007a | 5GsQxJr6Nsuuy1t4SuZFYyH8yfayeS7gxmHy8qNLapos87KE | 15
+             62.874 | 0xe9307c37f2dd9855c0a2b00f39fca1b61a5424e18149c839aba6d9f4f3e6ed80 | 5EHgdxZC3BhoYANeHhAVZWKrxfF23pcZrDfBwpDVTuLrCHB4 | 16
+  6870.465948833107 | 0x9bd4d76593faaed84a1b7480105b3319662520f096fca33992016269e4c74d95 | 5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | 17
+   165.423149442613 | 0x53100df23511c4b5f35c15ef60db495df54cef4e6e3c573f1842cd77b85fc6d6 | 5CajHU7obxxhCy8SRPkg6krKh94pyijBLcqmFnJ7tzYpf5Ri | 18
+  4006.670259566985 | 0x0ec1e11ba5fe0cbc089e7d8c1cdac8b09e3e500b6ce7f28d3cb2fd6c209387a6 | 5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG | 19
+    67.718597387932 | 0x46650578c08514ce66bae04ea6a3c193c9024c75f4b9fd3b889adfe88b812426 | 5E53NmqDGpQEHgTiPtjkoz8FMBBhidi7W2C5zz2eSpGSHckJ | 20
+  3606.567757251074 | 0xbd6d7cdf57e8a8c940ded64ccebe83d341acf6b3c9459ba27f23e989b27b6860 | 5CP538H1c5yj5E63S2Jnckkwt4udy1XDqgDWsGXskCRcrMsf | 21
+    75.166120381222 | 0x8286e36d6f196e0b5a732434b26b073069a23d4d61aa71cd95cae907a7ada29f | 5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J | 22
+    59.829234209402 | 0x0e6c6b2363e01154a15c9648ee358716de90c7ac0320aefb45fdc603499f4047 | 5HTsyLYrhFCeJucLBMbQ4NhJ8usp1JZbPKJzYZUqrQwDZfQe | 23
+    75.242885986591 | 0x23454a9b4c4d9dbc150fa7ae769784e1a09c4c12e725a5105c6a4903409c1208 | 5E53NmqDGpQEHgTiPtjkoz8FMBBhidi7W2C5zz2eSpGSHckJ | 24
+ 14720.717995320916 | 0x447f0213351d11344060c3596376e84f1516d1480b15d70fcba5848d8d807175 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 25
+            30.2715 | 0x2e31e1501a098013887391a0d361c42ae6e13baaca81a7cec58b07df47612485 | 5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av | 26
+  6915.882608960393 | 0x4a93a34fd4efee7018ff6249abf9997e240bd7e4b67bed147d693283ce6e8ba4 | 5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j | 27
+   216.766080866191 | 0xe676ecd90fc4ddced7ac53cb6a1050b8efb5292d5ca04eecafffbfdb22e33847 | 5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | 28
+   461.330347785627 | 0x09d0d667e7682c8d175e6ec3d2e55b1991d0c61c619ae8b37b29e98611393a98 | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | 29
+   183.803499380681 | 0x0ae93c561d707d78c5dd28005110b9eb8aa75d85aa79510172ea7e4edd77cd5b | 5CajHU7obxxhCy8SRPkg6krKh94pyijBLcqmFnJ7tzYpf5Ri | 30
+  1376.456498198839 | 0x0b55b792c24cc9dba6a81ddcf06828271919871f0eb8d82704226efad907a20b | 5EnV2rATiceqa6zpFzfhhwnVJdzddAzvrt5bdqJm2jxyzTSK | 31
+   193.021928753968 | 0xedbec9e4380d1dc0d06e8d65cbc9cc50f29655bfed2ddd48e957b0c4998952b5 | 5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG | 32
+ 13042.394377722516 | 0x7e8cdffe70cad0e060ea37175c44b08af365bca262cd5c8ec3f669f8516b7c3e | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 33
+         58.8097125 | 0x79f80b7668104ba8ecb3f0af2ddae082e71fd67fe4b4ec3636b3e47e0c995914 | 5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp | 34
+  3784.773737451184 | 0x81718f180198d270886e7d50b659bdf8a4dd7da9505555af062648744de4294d | 5Hg6qW3DXZJhNvsz6bmaz37XeAa8fnHy8fx86iYx2GyYhxt2 | 35
+  3042.012010895256 | 0xfd017552fab12afe97c44390f1153ef3b73182d11e7a1bf3504b34d8df22e66e | 5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V | 36
+  2338.474499006673 | 0xa821013b023add8d5b0e460db7864edd5ccae4a299e0308b4621365e09eeac26 | 5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq | 37
+     58.88135952284 | 0x34b189a8d288eadd0b3cbab3e25ede837732619797586ab50327471c5f03ece7 | 5DcZiwYyXdXRZ5YBH9KEegqnNHa98ySfwdaVgw3TLkXsKw13 | 38
+ 12767.284070452093 | 0x92cbdb534c8d14056d6d989709c6bf7db42c09e62a1629480be9105889503a17 | 5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf | 39
+     4.753440686887 | 0x2471e7c6ea6a8a3661680d5ce09c17f839bbb84620206b3519deaa651b8243a2 | 5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq | 40
+  4560.948107590336 | 0xcc7596e6f77cd22738e4d0b1776b853232a69014cde9e3fff408894dc0a48ab3 | 5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG | 41
+  6858.032000706027 | 0x02633d28b1399a3c85e0a2cb4151ce849969d5bd208e72fa5c6658658e61f8f3 | 5GEZCgmTQMn32Y8dbz93BBrm6zDwnv8H6HXZnJpvqZuYAsF5 | 42
+          60.421914 | 0x820883b7c6fa5b172d094eb358212ec3ff5bb999a2e71c60f85970909d07600e | 5Et1em2DPr8cNQKMMkAryByEzUjGNtS9jkxopgCZkLffCjgZ | 43
+  6765.785345719172 | 0xbf5756d689b5da0c73f1039f9bb3e46fbbb941082810220ea016d694122e338a | 5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku | 44
+   797.407680301753 | 0xe8339234a5ded1cf1c30888c8c87fef659f52f068c1d7ecd62e6fdf2697fd1c9 | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | 45
+             60.543 | 0x8f0f697048a5751ebd7b9da457de06161e8f0c9e161d1503200638bf720d3aaf | 5HDpKEgBWNnHsujXoAbmGkXf8NY8scDwGFttRG6VgTKtNgQS | 46
+   1960.19811495967 | 0x7a6847c0827ce5540f8365f9d5ac8e409a4178701fe1e54a5812eeed5d348c21 | 5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc | 47
+  4315.471633096764 | 0x68be1802a4eabf7b7e14c554edae62eeda318af0ae850fef2a28a91d74d7d92b | 5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy | 48
+    51.566143984853 | 0xa5f62f339797632dee9ce0a330d4862f0707e943a3c22151954b3086e9a32b04 | 5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi | 49
+   8505.85550407442 | 0x05a580b4cf748c3170cb0415e71bd7698f5759ab4922260b64ae8ef58cbb603a | 5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R | 50
+             60.543 | 0x688996419be7c2aca7faef307b70abe2aed7356dc0d559e743706134aae37e59 | 5HR4xLmgmhX5Q2uJWcUCYqSNNM8wmX7gNBwamqEjF3JtiyeR | 51
+  1543.593697719179 | 0xa3a62b94dd965cfecd64f66695a85b855667b71fc07f07d2353c7b8a5a6ff44b | 5DRnQzfeSVnVP9Rm1PtkrDLXtUPvu3VHwKscL2m17izXf654 | 52
+  3188.434346752174 | 0x887e26f53a9d1dedda5cededfece580ae0baee24be9bc35b1c5ff965daade59c | 5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | 53
+    83.517911534691 | 0xb601be4f929f32ed34625e2da763a814d1eca1349e3fe9748d025ef72c00e3de | 5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J | 54
+  1542.883653105051 | 0xef9e46b25757fd0713e54c97c20ae57155fea8c18952386f84b8e2de9f4d4f52 | 5GKs8j7UhiAJ2TFxcMqbxXe5G39sdybSPqQj82KXxGgf3iQz | 55
+  4709.176828036571 | 0xf5e2034a802eadb4c921c273b7beb30d297e97c568521fd8aa02d8cc0b915879 | 5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy | 56
+   164.413799501448 | 0x0e33f11c13eedbc9e875f4d3a6aa46ff0afdb35c4399a4108fdd1aba2fe06eea | 5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf | 57
+  7470.336251149964 | 0x5df88640a1d0f8bae7d6bb61332490fe61b4ec26f5c4ddbc75df6000f72ffb26 | 5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | 58
+     59.34523324212 | 0x69d193a60629a21ce64a410449e7c0f466a0b66f9ce6b12ca37de9192be43f74 | 5HanHWVw1By1Gkj6DfSK53uCGk5rc3FtknQ8UA3cHCZAEtLg | 59
+  3887.466472356426 | 0xc9f6f3045384ffba276d487042e6dfc56d9878266e090c930ad6531c8fb8dfbf | 5DV4i2V7gx3HRGrNjbz9LmUdDjwG7MqFiVrsUZVVqrZHdFf7 | 60
+(60 rows)
+
+
+==========================
+==========================
+==========================
+==========================
+
+ERA 458: block 2846015, sum is 71679.93450348124 PIRL
+
+mysql> select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=2846015 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                              71679.93450348124 |
++----------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 from data_event where block_id=2846015 and event_id='Slash';
++-----------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 |
++-----------------------------------------------------------+
+|                                                58.8097125 |5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp
+|                                         6618.708265774086 |5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j
+|                                          838.234858081179 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                            4.753440686887 |5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq
+|                                         12470.13727265606 |5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf
+|                                           51.566143984853 |5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi
+|                                         4408.808881236452 |5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG
+|                                                   30.2715 |5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av
+|                                          8221.93654309547 |5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R
+|                                          392.708283382315 |5CkiRkK9EwZ27yNG88yoo4yT1AhbwKmRotXiedFmCusysmza
+|                                         6765.785345719172 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku
+|                                           61.053194832806 |5EeZ2z4D4aBDMmrZUG9ekD28q3QdnWcreoXVzv1HE7UidFTJ
+|                                         1542.627077024911 |5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc
+|                                         5911.235979142982 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                           86.274166245073 |5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT
+|                                         1495.273404867079 |5DRnQzfeSVnVP9Rm1PtkrDLXtUPvu3VHwKscL2m17izXf654
+|                                         3801.617251554796 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE
+|                                          155.849749483567 |5DF8WLdHwQXKnbbc9H1nhfrLfNV4fiYFaaxUKFxu5qx2eGzt
+|                                         7398.807609485843 |5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq
+|                                            58.88135952284 |5DcZiwYyXdXRZ5YBH9KEegqnNHa98ySfwdaVgw3TLkXsKw13
+|                                         3614.417491812667 |5DV4i2V7gx3HRGrNjbz9LmUdDjwG7MqFiVrsUZVVqrZHdFf7
+|                                            59.34523324212 |5HanHWVw1By1Gkj6DfSK53uCGk5rc3FtknQ8UA3cHCZAEtLg
+|                                         3608.105954551948 |5Hg6qW3DXZJhNvsz6bmaz37XeAa8fnHy8fx86iYx2GyYhxt2
+|                                                      69.3 |5GmdHWhPr6nBJDvFXpMcHm7QBLQcgnAjU3YzupbxzLs9z4xa
+|                                         3955.425784598138 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY
++-----------------------------------------------------------+
+25 rows in set (0.00 sec)
+
+==========================
+==========================
+==========================
+==========================
+
+ERA 393: block 1963174, sum is 124607.51690821935 PIRL
+
+mysql> select sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) from data_event where block_id=1963174 and event_id='Slash';
++----------------------------------------------------------------+
+| sum(JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000) |
++----------------------------------------------------------------+
+|                                             124607.51690821935 |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 from data_event where block_id=1963174 and event_id='Slash';
++-----------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 |
++-----------------------------------------------------------+
+|                                           65.648596594415 |5EeZ2z4D4aBDMmrZUG9ekD28q3QdnWcreoXVzv1HE7UidFTJ
+|                                         4878.577250165887 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                          369.742018193688 |5Ca5WdMSFrCopoSoGeBUXn3BFqUV2ZGcrSaQ3zsJb9NYSHLX
+|                                        13300.618051660036 |5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf
+|                                          360.995399426823 |5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx
+|                                         2224.788991413534 |5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy
+|                                         2358.840943690337 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                          973.363432294595 |5FUZx2HuAQAckiDJa6L5npEhdF8kMhf9W3fgNgMwZ3XBDqBC
+|                                         3683.375242301877 |5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc
+|                                          295.357915969996 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                          176.789031721988 |5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf
+|                                         3386.370912568294 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE
+|                                         1380.826988474514 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                            55.44746665038 |5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi
+|                                         3159.452945868287 |5CP538H1c5yj5E63S2Jnckkwt4udy1XDqgDWsGXskCRcrMsf
+|                                          553.375587697543 |5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY
+|                                          607.693339053777 |5GP2zJH2yB5nUgFQvpUng6hxJ83iFrx3FEVjvrgN4ZDKYboK
+|                                         8723.199522513716 |5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R
+|                                          167.580375788782 |5DF8WLdHwQXKnbbc9H1nhfrLfNV4fiYFaaxUKFxu5qx2eGzt
+|                                          4776.87390689205 |5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq
+|                                                   65.0349 |5Dtbw1aUNgtpTUMmoyujKSHijAtDwZtsJQXpiyM7KqQL2svF
+|                                         5053.711262708174 |5GsQxJr6Nsuuy1t4SuZFYyH8yfayeS7gxmHy8qNLapos87KE
+|                                          422.266971378833 |5CkiRkK9EwZ27yNG88yoo4yT1AhbwKmRotXiedFmCusysmza
+|                                         1511.231514262633 |5GKs8j7UhiAJ2TFxcMqbxXe5G39sdybSPqQj82KXxGgf3iQz
+|                                           3294.3316986419 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku
+|                                           92.767920693627 |5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT
+|                                          185.554013677995 |5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG
+|                                         4665.965520771142 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                                      65.1 |5HR4xLmgmhX5Q2uJWcUCYqSNNM8wmX7gNBwamqEjF3JtiyeR
+|                                         2141.098652602522 |5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V
+|                                         2736.495115283386 |5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP
+|                                                     32.55 |5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av
+|                                         6976.618284141484 |5GEZCgmTQMn32Y8dbz93BBrm6zDwnv8H6HXZnJpvqZuYAsF5
+|                                             5.11122654504 |5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq
+|                                         6975.275426671758 |5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j
+|                                           87.353583583068 |5HdVK4twx9SoD6mJSiPCNMneo8Y5xkWK3UJub5Qekr5wL281
+|                                         4856.166824635089 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                            89.80420595128 |5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J
+|                                           131.32809631686 |5EM76GfCst2SfkFfabU2mnLsovVY9DVFNneBa8Bi4mo235R1
+|                                         4723.435682256213 |5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy
+|                                                   64.9698 |5Et1em2DPr8cNQKMMkAryByEzUjGNtS9jkxopgCZkLffCjgZ
+|                                         4879.330519707141 |5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE
+|                                                  63.23625 |5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp
+|                                         1782.348959503885 |5HjgAXNTcCr6bwZ3z7ru4VzBm7YWYPHycKgEKFEup5qzSuhF
+|                                          3098.38498620665 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                                      65.1 |5HDpKEgBWNnHsujXoAbmGkXf8NY8scDwGFttRG6VgTKtNgQS
+|                                            109.9453573922 |5H9MpiZEYQHwg3VYnDcscQH4X8a796ruD1BpME66u2Hnxd3D
+|                                          221.035974065527 |5Dq2jsKyZ9n27NMvpnyDJ1QjgwoRuuHyPKpdLJjEj39NbzRs
+|                                         4548.167130160541 |5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn
+|                                         1246.799499433656 |5ED4AUhHCNQYeXYhS9nc4rQPXVsaycnh8pMrpZmD7ttuWaGq
+|                                         3980.706307507747 |5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku
+|                                                     69.93 |5DLTdqviwHp1JKR2K3ACHoGe4bzRb6YWPqkYT5H853UMqWVn
+|                                         3933.331457158631 |5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG
+|                                           81.744581649759 |5FEU6PyjcwFdNxzMtwCuWAAcx7s6vP7Uj2zZructqVSrKyQv
+|                                         4852.367266372072 |5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V
++-----------------------------------------------------------+
+55 rows in set (0.00 sec)
+
+
+==========================
+==========================
+==========================
+==========================
+
+HASHES of TX (full refund of 80 slashes of eras 458 and 393 on 14/04/2022)
+
+
+people=# select sum, blockhash, address, id from unslash where status is not null order by id;
+        sum         |                             blockhash                              |                     address                      | id 
+--------------------+--------------------------------------------------------------------+--------------------------------------------------+----
+         58.8097125 | 0x50b429db3c43d85bebb3bb2e7fd16fa2d1c6e07b0aabf030a39bb15ed0209250 | 5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp |  1
+  6618.708265774086 | 0x60beffdbd4425f69030293d3d077a655af56dc487fd82693e3cd608979d61468 | 5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j |  2
+   838.234858081179 | 0x7f9c0838a8372effae46ab66b1516c18e386b9c1c31864507fa9deeb2768b360 | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP |  3
+     4.753440686887 | 0xf27a611bbd7b3e3d42453c962ccbd371be12bb44bc86ac4a9f76a09386647e3d | 5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq |  4
+  12470.13727265606 | 0x0a074f834a59b8417a8c1c45f8868322f12b6d68b678e01a02dc991712ad6091 | 5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf |  5
+    51.566143984853 | 0x50c05925b654e1464ecd9e7a6f89e7b030a98387b95bdc81174b63b3a3cb5dae | 5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi |  6
+  4408.808881236452 | 0xed5d2250514dc9b2be217276ba418bbd066d28ebaf7241cebe0d4bc1237625d7 | 5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG |  7
+            30.2715 | 0xbc00d3c385b68dc185fa8ac67a2b49a2ff63be38eded94a72c538dd6e346d856 | 5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av |  8
+   8221.93654309547 | 0x7a7c2b73338b1ff557f6b915be71f16bcdd3a3bd2527f30286b5f6259512f504 | 5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R |  9
+   392.708283382315 | 0x44beaf54d1bf96207c86b866662a92e046251cf28a2eaf459aeb671cef6cc75f | 5CkiRkK9EwZ27yNG88yoo4yT1AhbwKmRotXiedFmCusysmza | 10
+  6765.785345719172 | 0x9e5ba4f2e8ae1fbe7d3d05157c16faab93537172a31f44f818faf11e69ec9f21 | 5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku | 11
+    61.053194832806 | 0x7b8973ffe4fd295de36d4444b6a0c692341fb4e4afab3fef763c26295addb4a9 | 5EeZ2z4D4aBDMmrZUG9ekD28q3QdnWcreoXVzv1HE7UidFTJ | 12
+  1542.627077024911 | 0x9e1cf34a3264fff2e2765012bc4d74bc310eeae7305d511e3bb5cdf4c7aec7fe | 5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc | 13
+  5911.235979142982 | 0x8a3a0653a6d0caf3ad511e0a98af3be38e2eec5cbf0a412e7a6521ef02c386df | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | 14
+    86.274166245073 | 0xa8be7b912c29d0ec7049099594d4a344f314095232a839b394b66e18a5f3bee2 | 5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT | 15
+  1495.273404867079 | 0x4d30b626baf0e2a71ec4d614e7fc60e16fca26342dda1b25a800726dd4707e9d | 5DRnQzfeSVnVP9Rm1PtkrDLXtUPvu3VHwKscL2m17izXf654 | 16
+  3801.617251554796 | 0x65318a5c522bb9935af9d9d4f32f9f914850ae8c3a5c6a5036fadf232ade6055 | 5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | 17
+   155.849749483567 | 0x33f7dd259388b1390c1f1a0a20336e348d3b9c61d17138c4d045d2823cf0e4ff | 5DF8WLdHwQXKnbbc9H1nhfrLfNV4fiYFaaxUKFxu5qx2eGzt | 18
+  7398.807609485843 | 0x56868cecbc07b3b2fac8f2af3d19463286b9b5f436b3d46963a58a9dbaf90baa | 5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq | 19
+     58.88135952284 | 0xfb758cd0344878637cc0219693d2a07f17ccf80dfd1fea600136cb3a938ba008 | 5DcZiwYyXdXRZ5YBH9KEegqnNHa98ySfwdaVgw3TLkXsKw13 | 20
+  3614.417491812667 | 0xaa2317023ca569c957207d230769498f4aafbe39fc80cbdba2068de01bd9c022 | 5DV4i2V7gx3HRGrNjbz9LmUdDjwG7MqFiVrsUZVVqrZHdFf7 | 21
+     59.34523324212 | 0x4545bdfec0d4d4294fab9f9623d368d516460c9f74a51a8ea623bf8aed528d0f | 5HanHWVw1By1Gkj6DfSK53uCGk5rc3FtknQ8UA3cHCZAEtLg | 22
+  3608.105954551948 | 0x44944a816ebb4083e0cb5a83484013c3f0a83e182d511ad8643c5528c8e89e51 | 5Hg6qW3DXZJhNvsz6bmaz37XeAa8fnHy8fx86iYx2GyYhxt2 | 23
+               69.3 | 0xb0dffcefa26e204084da1cda62941f353d91a6e24eb101a090809a162be369c1 | 5GmdHWhPr6nBJDvFXpMcHm7QBLQcgnAjU3YzupbxzLs9z4xa | 24
+  3955.425784598138 | 0xc0b0d9f68f06e3e59b344613ed01cf70b7f2c2b73b57c01efdccc17de8766c07 | 5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | 25
+    65.648596594415 | 0x556b504e44ceb3fb16b70201745cd27a040e8bb99dda2e4a34c5c5975f324947 | 5EeZ2z4D4aBDMmrZUG9ekD28q3QdnWcreoXVzv1HE7UidFTJ | 26
+  4878.577250165887 | 0x3948427e828acced8337c8327fedd7fb64dbfae48bd2a99685caeb5082eb14f7 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 27
+   369.742018193688 | 0x7c487332e07f573dc160997ef75d6dbb10b94248a1c18342e8590e3763b0a774 | 5Ca5WdMSFrCopoSoGeBUXn3BFqUV2ZGcrSaQ3zsJb9NYSHLX | 28
+ 13300.618051660036 | 0xd4e5b541f6b304c5d30a3f007ef09ea49a93e53312b354797655da20a46479c3 | 5ChXpfYx17dtsgKtKXrFeqroSNHkiAYercYJZGN87CJ4QwSf | 29
+   360.995399426823 | 0x72ec85ae45d6f92920a8c7b10c2b6d25887837a7b024d539200c8cf4b3a73aa4 | 5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx | 30
+  2224.788991413534 | 0xefe3044a8d939f66ca6e50389dff31fb7cb492e9cd628997031d02cc9414fb86 | 5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy | 31
+  2358.840943690337 | 0x1e07a7e1704028c5b3c79256e904f3cce84486190b63c4be33650d8668b527b6 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 32
+   973.363432294595 | 0xad73108f809e152f40c9c8b2f0ae73fb0154ada0031ece256a396f38f5b8b12d | 5FUZx2HuAQAckiDJa6L5npEhdF8kMhf9W3fgNgMwZ3XBDqBC | 33
+  3683.375242301877 | 0x073ba30393112173543578d1747bd179b34f03945879412024ec0d7ecf2adfbc | 5HQEyRf2sUG96xVRwZ7LTHhUHaR7sBfhDfWregc3ameMM2yc | 34
+   295.357915969996 | 0xb92d104454eea7e8f21e3998b24256492518eea8316979af7b23c48db5845499 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 35
+   176.789031721988 | 0x83f29a5a9b25015c48baea4b0e331534db3e5f9efc5f0f25619b6421154221f3 | 5HdqKabUed7zQLXpFhLThKUc4JyqhkBRw8X45AxWxVZcmNkf | 36
+  3386.370912568294 | 0xaeb40e34d5c521f2f6db61e9028b67ab428411951b1c74a90f9d093252c08d69 | 5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | 37
+  1380.826988474514 | 0x715479657f49bb6205dc2cec25b92452012292d43c76e0573e4fdd5b7ad59d7d | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 38
+     55.44746665038 | 0x4ef6996fcd2232df249bdc75704113ee796f2d4fd20b1a1a938d31be760c6af4 | 5FRhPCfXkUyZ93D2YRj4WHziUkWgEevFz2ds1vHAztt3tLwi | 39
+  3159.452945868287 | 0xe1805a01ff2f01f8f5c1410d7c0af147bd68207b65c1abf14e6740b2e079df8d | 5CP538H1c5yj5E63S2Jnckkwt4udy1XDqgDWsGXskCRcrMsf | 40
+   553.375587697543 | 0x8750c18dbd49ca6376d43fff03424f907dace27f5cb1a09f3ce79a1d727b1a88 | 5HKWKEXRPuUzyfTmfzboBCEGokpRYnjFbn3xS6Y8AQMhExFY | 41
+   607.693339053777 | 0xa34d9a9353df297b663ed641fc1127c32dc9b5fc73c65769c7108cb706d554d8 | 5GP2zJH2yB5nUgFQvpUng6hxJ83iFrx3FEVjvrgN4ZDKYboK | 42
+  8723.199522513716 | 0x6d68e06e91e2756a1a7b247c31ba77788612ad018f3625f05be2d63c3267699c | 5DQ3VCa4uGHLqnjaqvN3BeicmwLzQX3c4uWZ6qesY7c8iS1R | 43
+   167.580375788782 | 0xedf57b7dd5cbc339bd5ac8825a6aada238609fe13bcb2f34cd8636d2010931c2 | 5DF8WLdHwQXKnbbc9H1nhfrLfNV4fiYFaaxUKFxu5qx2eGzt | 44
+==== nn. 45-60 has been paid twice by bot. no regrets.
+
+people=# select sum(sum) from unslash where id > 44 and id < 61;
+        sum         
+--------------------
+ 38999.986414270544
+(1 row)
+
+people=# select count(*) from unslash where id > 44 and id < 61;
+ count 
+-------
+    16
+(1 row)
+   
+   4776.87390689205 | 0x6b19ca13c0bcf05650ebe8702880f3bc26d814711047b4b1e1422655d585e301 | 5D8DUfzkB3U7ovs2iMGu76bGwuULPH8Dby81AyCbQ6Tvkyzq | 45
+            65.0349 | 0x71c56225a635c236760a5756a107121886269dc9f5a34f0584d3f81fc80dc50d | 5Dtbw1aUNgtpTUMmoyujKSHijAtDwZtsJQXpiyM7KqQL2svF | 46
+  5053.711262708174 | 0x6a7911878cbf0733b58f2338719f3fa44b36225b33804b87bd55ba283516c836 | 5GsQxJr6Nsuuy1t4SuZFYyH8yfayeS7gxmHy8qNLapos87KE | 47
+   422.266971378833 | 0xb30efb66411d34a59ac6020116cc203ebba95ad9d612aba6c982c292cff79f34 | 5CkiRkK9EwZ27yNG88yoo4yT1AhbwKmRotXiedFmCusysmza | 48
+  1511.231514262633 | 0x31a6857e227ad5177077884f5728c829595f317bb98b6a1adf3a84b9c6fd54c2 | 5GKs8j7UhiAJ2TFxcMqbxXe5G39sdybSPqQj82KXxGgf3iQz | 49
+    3294.3316986419 | 0x3c272e20b3df9f9ba0d0caef984409aaf478d4ee143f6bf7e49ae30006c798ee | 5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku | 50
+    92.767920693627 | 0x62e33e807e6f5cc324f8cc48e25919cc53fb95fe1ce7f60bed66283e896bb370 | 5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT | 51
+   185.554013677995 | 0x168365013f17fc300fc12e0913378d12f148b190b8f588518a4652e9355d194c | 5EsiY5GBKodew4tkxagsZyLLFVXAfNN9jre15DT4MH1UcsiG | 52
+  4665.965520771142 | 0xc4066b9f6358242e48bcb19cbff4086805eb5daff14d3b2d5d8752e77c2d30a6 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 53
+               65.1 | 0xb81e8748569ba3847c28fa1fefd570bdc2cb305231f0c6334ce7032a02524064 | 5HR4xLmgmhX5Q2uJWcUCYqSNNM8wmX7gNBwamqEjF3JtiyeR | 54
+  2141.098652602522 | 0x388f59073b8305b44711b37cdd9b9731379b0d2d7a017d4d370cd017a492e765 | 5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V | 55
+  2736.495115283386 | 0xb83a8e269e46ef9edb7aece60d03ef41c4645bf9490aba5cf7befa8e92cdde9f | 5EWgQSD8iMS7yGiCR394zSDYM2sGoD8CvmCYjVqJSMt31FMP | 56
+              32.55 | 0x7973d42ee3380ad78bb432b746f6a31dd6b7261a7a6deca8454116532a189b2f | 5H9RHwUCvH73Lrq46Py1Y1SGpNTsn8gw4gpzcJ811kcGT6Av | 57
+  6976.618284141484 | 0x8571815e666b39313fc41dcef99d824719a697d55784514cfacdb5e682fc68fc | 5GEZCgmTQMn32Y8dbz93BBrm6zDwnv8H6HXZnJpvqZuYAsF5 | 58
+      5.11122654504 | 0x12f3473bbe80480e1f187d10864b876ef1bb6d0eab2a884d4202d7333e0dacef | 5Hp1j9eAs9612nWMsQ7ZsDaPpRTHWNSUSSRicBwJvoR4qPwq | 59
+  6975.275426671758 | 0x897d283bd7d32366dea22570e8df2939565131c0cb4072e0a4d163e86b88fa6f | 5Dci6k2XGMPi7ZacfifZ1JM2DfLQiTAdkXeBnPex8C98Ah1j | 60
+==== END no regrets.   
+    87.353583583068 | 0x120a2641502c0d96fefc2de796318a46c75c85e659dae134ddb5cebf3c028339 | 5HdVK4twx9SoD6mJSiPCNMneo8Y5xkWK3UJub5Qekr5wL281 | 61
+  4856.166824635089 | 0xdb0cf0efc8ece3cb725e0ed4bcdf6c6c9a8c26d67e47310f255feb7696b6e248 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 62
+     89.80420595128 | 0x384c4b94e760041d2cb6a553b368579232605512a3bfe4dcd92508ee0f6124a1 | 5Cm3EuM92eDJ76vaTfsFHsu59rR7DkUHLNPrkJQBE5JP6C6J | 63
+    131.32809631686 | 0xe1383323bae3f108783de997ba18d29fa4c8dda809f729cae5468ebea1539891 | 5EM76GfCst2SfkFfabU2mnLsovVY9DVFNneBa8Bi4mo235R1 | 64
+  4723.435682256213 | 0xb1ae8ab7e62bebbf52fc3399a505bbd0fd126d28f2e5c3342094b6d2855ff317 | 5ELQeZzkxKhY82ZcopLTUVKhoXH1XrWDLh5tJYd8PaRgG7Uy | 65
+            64.9698 | 0x8b31016df4df21edde30003877fefeecac31c6b7a77dc38b8521ab94a81bc08d | 5Et1em2DPr8cNQKMMkAryByEzUjGNtS9jkxopgCZkLffCjgZ | 66
+  4879.330519707141 | 0xbc7c4bf50710af6a822a19f1743d1a81bf406a75acee80e219cddaf4df79df0e | 5Dc5NjTruCfwF2bxvstLVDSUtESjJGkmCvLdSSoKB4WPYaTE | 67
+           63.23625 | 0x32fc4cef89ece923f01539c12dfdfd04177109958177d9cb6107830e2c6c0207 | 5Gv9qJWEQzevDQKeTG6ramLNUQ3PjHr7A8qvLJhbG4qRxzZp | 68
+  1782.348959503885 | 0x65bac880d2ec472012581b151243b0764e97a996ab31b5396114330ec408cb3a | 5HjgAXNTcCr6bwZ3z7ru4VzBm7YWYPHycKgEKFEup5qzSuhF | 69
+   3098.38498620665 | 0x187a474762c627b6b58e71fc3624536e8cdef0a368ca642968fd234d35bee89f | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 70
+               65.1 | 0xb7fad27006f567a041a86e08ff0149091f8bbf4b709ee9b4e7d5cf88533dbc57 | 5HDpKEgBWNnHsujXoAbmGkXf8NY8scDwGFttRG6VgTKtNgQS | 71
+     109.9453573922 | 0xa7861926cd697a1e1e349cfa0455ae5a95c7a4729f384dead52a14f01e746dde | 5H9MpiZEYQHwg3VYnDcscQH4X8a796ruD1BpME66u2Hnxd3D | 72
+   221.035974065527 | 0xd17fc707912675e2f2c865c7f14bb1b3c31af1615dffa24d498d34f77b51a9c8 | 5Dq2jsKyZ9n27NMvpnyDJ1QjgwoRuuHyPKpdLJjEj39NbzRs | 73
+  4548.167130160541 | 0x8dadfc6099b337ca9d8f087d9d8f518a7729f7513d4612c235cbb2fa5f6e7644 | 5FA9WUcQXbaGxwMRcgNmuSAk3BcvAiwXU1hHEcshXYiiy5Tn | 74
+  1246.799499433656 | 0x9b2ca06ba96d8cb82dc015b5e2593955e366f6420d7b9720b19b6fce2ede059a | 5ED4AUhHCNQYeXYhS9nc4rQPXVsaycnh8pMrpZmD7ttuWaGq | 75
+  3980.706307507747 | 0xc772fe46f107dc7500271d019e022dc6a8b1cf1a0119b3137e79c88a700e01a4 | 5G3hGwV1XxQV16XL8MzV4br9KJ8wQ548Wf6YC7ScSeRbGCku | 76
+              69.93 | 0xc193fdcc7f84d54fac9e532f2a7f24601da962eb110261a8b407c242e30ec5d8 | 5DLTdqviwHp1JKR2K3ACHoGe4bzRb6YWPqkYT5H853UMqWVn | 77
+  3933.331457158631 | 0xe7a5575a741602cac528967ec3e176c350fbf450492b3f217e2ff77c2831479e | 5DSDEFG6yLJvNU53Dntp3EHRAQRUYpF467ZHWV2Kq9cvDetG | 78
+    81.744581649759 | 0xdd13ae28478925a477d2e33bffec4a3007bb53a48d84f43b7282d742bfa1613b | 5FEU6PyjcwFdNxzMtwCuWAAcx7s6vP7Uj2zZructqVSrKyQv | 79
+  4852.367266372072 | 0x6f9c695e63f97d1849288681aa6c9ce6a02f993c72f990d4d2618af0362d8a57 | 5GYi7rtH52oPbZmNYBVVeVAp7yEpcbyyAWVfB5F16RtVXV5V | 80
+
+==========================
+==========================
+==========================
+==========================
+
+TOTAL SLASHES in eras:
+	237 (block 4528)
+	239 (4816)
+	241 (8379)
+	242 (19714)
+	243 (23109)
+	246 (54235)
+	247 (65685)
+	256 (173010)
+	261 (232138)
+	262 (245090)
+	263 (257465)
+	265 (283749)
+	267 (310271)
+	268 (323177)
+	270 (339320)
+	273 (366346)
+	282 (489302)
+	290 (596957)
+	297 (681837)
+	298 (695893)
+	308 (805482)
+	317 (922452)
+	320 (964019)
+	326 (1046777)
+	329 (1085566)
+	330 (1099630)
+	333 (1141789)
+	336 (1183633)
+	354 (1435067)
+	393 (1963174)
+	458 (2846015)
+	481 (3150115)
+	497 (3369133)
+	
+==========================
+==========================
+==========================
+==========================
+
+Request from SMALL MARINE to REFUND slashes from eras 261, 262 and 308:
+
+A. mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000, JSON_EXTRACT(attributes->"$[0]", "$.value") from data_event where block_id=232138 and event_id='Slash' and JSON_EXTRACT(attributes->"$[0]", "$.value") = "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e";
++-----------------------------------------------------------+----------------------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 | JSON_EXTRACT(attributes->"$[0]", "$.value")                          |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+|                                         35009.32148389479 | "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e" |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+1 row in set (0.03 sec)
+
+B. mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000, JSON_EXTRACT(attributes->"$[0]", "$.value") from data_event where block_id=245090 and event_id='Slash' and JSON_EXTRACT(attributes->"$[0]", "$.value") = "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e";
++-----------------------------------------------------------+----------------------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 | JSON_EXTRACT(attributes->"$[0]", "$.value")                          |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+|                                         35016.17127114753 | "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e" |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+
+C. mysql> select JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000, JSON_EXTRACT(attributes->"$[0]", "$.value") from data_event where block_id=805482 and event_id='Slash' and JSON_EXTRACT(attributes->"$[0]", "$.value") = "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e";
++-----------------------------------------------------------+----------------------------------------------------------------------+
+| JSON_EXTRACT(attributes->"$[1]", "$.value")/1000000000000 | JSON_EXTRACT(attributes->"$[0]", "$.value")                          |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+|                                         7547.684425262831 | "0x3afbf9e2bb0f880b5e5a19d370a3c1f72504458be9a4149d46de948bfa367d2e" |
++-----------------------------------------------------------+----------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+Transfers:
+
+A. Block 3,546,835 extrinsic hash: 0x324a27630d7a9d69cc69722f2ac7d835612e145fc997a0dd62e0231465f28bb1
+B. Block 3,546,846 extrinsic hash: 0x210405a83852c012e20115e645013e2e49a5c81d669571ef0a334935c2f3b1bf
+C. Block 3,546,884 extrinsic hash: 0xedb4aa55db013d8bd661c15c487309988a9b20c7cd9505b8b515a22beb4c2ccc
+
+
+REFUND OF SLASHES (12/04/2022 - 16/04/2022)
+=================================================
+
+1. 81591.764378776
+2. 115916.81719132126
+3. 71679.93450348124
+4. 124607.51690821935
+5. 38999.986414270544
+6. 35009.32148389479
+7. 35016.17127114753
+8. 7547.684425262831
+=====================
+Total refunded: 510369.196576374 PIRL

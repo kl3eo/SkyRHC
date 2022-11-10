@@ -1,0 +1,11 @@
+total 256312
+drwxr-xr-x 2 alex alex       148 Oct 22 09:56 .
+drwxr-xr-x 3 alex alex       138 Sep 24 16:14 ..
+-rwxr-xr-x 1 alex alex 127805752 Oct 15 13:55 binary
+-rw-rw-r-- 1 alex alex         0 Oct 22 09:56 filez
+-rw-rw-r-- 1 alex alex  34672798 Oct 18 06:58 fork.json
+-rw-rw-r-- 1 alex alex  45007309 Oct 18 06:30 genesis.json
+-rw-rw-r-- 1 alex alex   4811452 Oct 18 06:14 runtime.hex
+-rw-r--r-- 1 alex alex   2405726 Oct 18 06:01 runtime.wasm
+-rw-r--r-- 1 alex alex       418 Jul 10  2021 schema.json
+-rw-rw-r-- 1 alex alex  47742697 Oct 18 06:30 storage.json

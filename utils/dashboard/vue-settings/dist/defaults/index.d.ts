@@ -1,0 +1,13 @@
+import { Option } from '../types';
+import { CRYPTOS } from './crypto';
+import { ENDPOINTS, ENDPOINT_DEFAULT } from './endpoints';
+import { LEDGER_CONN, LEDGER_CONN_DEFAULT } from './ledger';
+import { PREFIXES, PREFIX_DEFAULT } from './ss58';
+import { ICON_DEFAULT, ICON_DEFAULT_HOST, ICONS, UIMODE_DEFAULT, UIMODES, UITHEME_DEFAULT, UITHEMES } from './ui';
+import chains from './chains';
+declare const CAMERA_DEFAULT = "off";
+declare const CAMERA: Option[];
+declare const LANGUAGE_DEFAULT = "default";
+declare const LOCKING_DEFAULT = "session";
+declare const LOCKING: Option[];
+export { CAMERA_DEFAULT, CAMERA, CRYPTOS, ENDPOINT_DEFAULT, ENDPOINTS, ICON_DEFAULT, ICON_DEFAULT_HOST, ICONS, LANGUAGE_DEFAULT, LEDGER_CONN_DEFAULT, LEDGER_CONN, LOCKING_DEFAULT, LOCKING, PREFIX_DEFAULT, PREFIXES, UIMODE_DEFAULT, UIMODES, UITHEME_DEFAULT, UITHEMES, chains };

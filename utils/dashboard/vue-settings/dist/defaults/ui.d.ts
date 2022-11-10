@@ -1,0 +1,10 @@
+import { Option } from '../types';
+declare const LANGUAGE_DEFAULT = "default";
+declare const UIMODE_DEFAULT: string;
+declare const UIMODES: Option[];
+declare const UITHEME_DEFAULT: string;
+declare const UITHEMES: Option[];
+declare const ICON_DEFAULT = "default";
+declare const ICON_DEFAULT_HOST: string;
+declare const ICONS: Option[];
+export { ICON_DEFAULT, ICON_DEFAULT_HOST, ICONS, LANGUAGE_DEFAULT, UIMODE_DEFAULT, UIMODES, UITHEME_DEFAULT, UITHEMES };

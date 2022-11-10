@@ -1,0 +1,7 @@
+1. cd dashboard
+2. vi package.json and find location vue-identicon
+3. install "vue-identicon" from kl3eo's github "dashboard" folder to the requested location
+4. yarn &&  yarn add vue-sweetalert2
+5. replace ./node_modules/@vue-polkadot/vue-settings/ and ./node_modules/@vue-polkadot/vue-api/ with dirs from kl3eo's github "dashboard" folder
+6. yarn build && serve -s dist -l 9090
+7. add new wallet's URL to --rpc-cors param of the SkyPirl node on rpc.room-house.com
