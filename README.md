@@ -23,6 +23,8 @@ BUILD
 	cargo build --release
 	strip target/release/pirl
 
+	runtime only: 
+	cargo +nightly-2020-10-06-x86_64-unknown-linux-gnu  build -p pirl-runtime --release
 
 START NODE
 ==========
