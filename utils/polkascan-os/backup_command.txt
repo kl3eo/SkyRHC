@@ -1,0 +1,1 @@
+docker exec skypirl3_mysql_1 /usr/bin/mysqldump -u root --password=root polkascan2 > backup.sql

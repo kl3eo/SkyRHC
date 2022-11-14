@@ -85,7 +85,9 @@ class PolkascanHarvesterService(BaseService):
 
         # Set block time of parent block
         child_block = Block.query(self.db_session).filter_by(parent_hash=block.hash).first()
-        block.set_datetime(child_block.datetime)
+        if child_block is not None:
+             block.datetime = child_block.datetime
+        #    block.set_datetime(child_block.datetime)
 
         # Retrieve genesis accounts
         if settings.get_versioned_setting('SUBSTRATE_STORAGE_INDICES', block.spec_version_id) == 'Accounts':
@@ -749,6 +751,7 @@ class PolkascanHarvesterService(BaseService):
         sequenced_block = BlockTotal(
             id=block.id
         )
+        #print('sequence_block: 1')
 
         # Process block processors
         for processor_class in ProcessorRegistry().get_block_processors():
@@ -760,7 +763,7 @@ class PolkascanHarvesterService(BaseService):
             )
 
         extrinsics = Extrinsic.query(self.db_session).filter_by(block_id=block.id).order_by('extrinsic_idx')
-
+        #print('sequence_block: 2')
         for extrinsic in extrinsics:
             # Process extrinsic processors
             for processor_class in ProcessorRegistry().get_extrinsic_processors(extrinsic.module_id, extrinsic.call_id):
@@ -772,7 +775,7 @@ class PolkascanHarvesterService(BaseService):
                 )
 
         events = Event.query(self.db_session).filter_by(block_id=block.id).order_by('event_idx')
-
+        #print('sequence_block: 3')
         # Process event processors
         for event in events:
             extrinsic = None
@@ -789,9 +792,9 @@ class PolkascanHarvesterService(BaseService):
                     parent_block_data,
                     parent_sequenced_block_data
                 )
-
+        #print('sequence_block: 4')
         sequenced_block.save(self.db_session)
-
+        #print('sequence_block: 5')
         return sequenced_block
 
     def integrity_checks(self):
@@ -884,6 +887,7 @@ class PolkascanHarvesterService(BaseService):
         return {'integrity_head': integrity_head.value}
 
     def start_sequencer(self):
+        #print('start_sequencer: 0')
         self.integrity_checks()
         self.db_session.commit()
 
@@ -901,7 +905,7 @@ class PolkascanHarvesterService(BaseService):
             sequencer_head = -1
 
         # Start sequencing process
-
+        #print('start_sequencer: 1')
         sequencer_parent_block = BlockTotal.query(self.db_session).filter_by(id=sequencer_head).first()
         parent_block = Block.query(self.db_session).filter_by(id=sequencer_head).first()
 
@@ -915,7 +919,7 @@ class PolkascanHarvesterService(BaseService):
 
                 if not block:
                     self.db_session.commit()
-                    return {'error': 'Chain not at genesis'}
+                    return {'error': 'Chain not at genesis:1'}
 
                 if block.id == 1:
                     # Add genesis block
@@ -923,7 +927,7 @@ class PolkascanHarvesterService(BaseService):
 
                 if block.id != 0:
                     self.db_session.commit()
-                    return {'error': 'Chain not at genesis'}
+                    return {'error': 'Chain not at genesis:2'}
 
                 self.process_genesis(block)
 
@@ -943,12 +947,13 @@ class PolkascanHarvesterService(BaseService):
                 sequencer_parent_block_data = sequencer_parent_block.asdict()
                 parent_block_data = parent_block.asdict()
 
+            #print('start_sequencer: 2')
             sequenced_block = self.sequence_block(block, parent_block_data, sequencer_parent_block_data)
             self.db_session.commit()
 
             parent_block = block
             sequencer_parent_block = sequenced_block
-
+        #print('start_sequencer: 3')
         if block_nr is None:
             return {'result': 'Finished at #{}'.format(block_nr)}
         else:

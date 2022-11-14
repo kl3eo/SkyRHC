@@ -16,8 +16,8 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_PASSWORD=root
-      - DB_NAME=polkascan
-      - SUBSTRATE_RPC_URL=wss://cube.room-house.com:8409
+      - DB_NAME=polkascan2
+      - SUBSTRATE_RPC_URL=wss://cube.room-house.com:8410
       - SUBSTRATE_ADDRESS_TYPE=42
       - TYPE_REGISTRY=development
       - TYPE_REGISTRY_FILE=app/type_registry/skypirl.json
@@ -45,8 +45,8 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_PASSWORD=root
-      - DB_NAME=polkascan
-      - SUBSTRATE_RPC_URL=wss://cube.room-house.com:8409
+      - DB_NAME=polkascan2
+      - SUBSTRATE_RPC_URL=wss://cube.room-house.com:8410
       - TYPE_REGISTRY=development
       - TYPE_REGISTRY_FILE=app/type_registry/skypirl.json
       - SUBSTRATE_ADDRESS_TYPE=42
@@ -105,7 +105,7 @@ services:
       - '33061:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=polkascan
+      - MYSQL_DATABASE=polkascan2
     cap_add:
       - SYS_NICE
     command:
@@ -117,14 +117,14 @@ services:
     build:
       context: explorer-gui/.
       args:
-        NETWORK_NAME: SkyPirl 
-        NETWORK_ID: skypirl
+        NETWORK_NAME: SkyPirl4 
+        NETWORK_ID: skypirl4
         NETWORK_TYPE: pre
         CHAIN_TYPE: relay
         NETWORK_TOKEN_SYMBOL: PIRL
         NETWORK_TOKEN_DECIMALS: 12
         NETWORK_COLOR_CODE: e6007a
-        API_URL: http://127.0.0.1:8080/api/v1
+        API_URL: https://subscan.skypirl.org/api/v1
     ports:
       - '8080:80'
     depends_on:

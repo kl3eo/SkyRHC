@@ -415,6 +415,8 @@ class NetworkStatisticsResource(JSONAPIResource):
         if response is NO_VALUE:
 
             best_block = BlockTotal.query(self.session).filter_by(id=self.session.query(func.max(BlockTotal.id)).one()[0]).first()
+            tot_signed_extrinsics = Extrinsic.query(self.session).filter_by(signed=1).count()
+            tot_accounts = Account.query(self.session).count()
             if best_block:
                 response = self.get_jsonapi_response(
                     data={
@@ -422,11 +424,11 @@ class NetworkStatisticsResource(JSONAPIResource):
                         'id': network_id,
                         'attributes': {
                             'best_block': best_block.id,
-                            'total_signed_extrinsics': int(best_block.total_extrinsics_signed),
+                            'total_signed_extrinsics': int(tot_signed_extrinsics),
                             'total_events': int(best_block.total_events),
                             'total_events_module': int(best_block.total_events_module),
                             'total_blocks': 'N/A',
-                            'total_accounts': int(best_block.total_accounts),
+                            'total_accounts': int(tot_accounts),
                             'total_runtimes': Runtime.query(self.session).count()
                         }
                     },
