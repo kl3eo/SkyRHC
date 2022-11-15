@@ -21,8 +21,8 @@
         icon-left="paper-plane"
         outlined
         :disabled="!accountFrom"
-        @click="shipIt">
-				Transfer 0.01 Pirl
+        @click="shipIt2">
+				Transfer 1 Pirl
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -96,6 +96,10 @@ export default class Binder extends Vue {
       this.$store.state.explorer.provider)
   }
 
+  getMessage(message: string) {
+    return message;
+  }
+
   inIframe () {
     try {
         return window.self !== window.top;
@@ -103,7 +107,6 @@ export default class Binder extends Vue {
         return true;
     }
   }
-
   getParentOrigin() {
     const locationAreDisctint = (window.location !== window.parent.location);
     const parentOrigin = ((locationAreDisctint ? document.referrer : document.location) || "").toString();
@@ -120,33 +123,33 @@ export default class Binder extends Vue {
 
     return "";
   }
-
-  public async shipIt(): Promise<void> {
-    const { api } = Connector.getInstance();
+  
+  public async shipIt2(): Promise<void> {
+      const { api } = Connector.getInstance();
       try {
-        showNotification('Dispatched');
-//console.log([this.accountTo.address, this.balance])
-	//const pirl = this.balance/1000;
-	const pirl = 10000000000; //0.01Pirl
-	//const accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
+        showNotification('Dispatched');	
+	const pirl = 1000000000000; //1Pirl
+	
+	const alicePair = keyring.getPair(this.accountFrom.address);
+	alicePair.decodePkcs8(this.password);
+	
+	const { nonce } = await api.query.system.account(this.accountFrom.address);
+        
+	let getVars:string = '';
+        let uri = window.location.href.split('?');
+        if(uri.length == 2) {
+          let vars = uri[1].split('#');
+          vars.forEach(function(v) {
+            let tmp = v.split('=');
+            if(tmp.length == 2)
+              getVars = tmp[1];
+          });
+        }
 
-    let getVars:string = '';
-    let uri = window.location.href.split('?');
-    if(uri.length == 2) {
-      let vars = uri[1].split('#');
-      vars.forEach(function(v) {
-        let tmp = v.split('=');
-        if(tmp.length == 2)
-          getVars = tmp[1];
-      });
-//      console.log(getVars);
-    }
-        //const accountToConst = getVars.length == 48 ? getVars : '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
 	let accountToConst:string = '';
         let h = this.getParentOrigin(); 
-	let reh=/https:\/\//gi; let hh = h.replace(reh,"");
+	let reh=/https:\/\//gi;let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
-	
 	switch(hhh[0]) { 	
 		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
 			break; 
@@ -155,27 +158,100 @@ export default class Binder extends Vue {
 		default: console.error('Unrecognized room name', hhh[0]);
 	}
 	
-        const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [accountToConst, pirl?.toString()]);
+	api.tx.balances
+	.transfer(accountToConst, pirl)
+	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
+	  console.log('Transaction status:', status.type);
+	  console.log('Status', status);
+
+	  if (status.isInBlock) {
+        	console.log('Included at block hash', status.asInBlock.toHex());
+        	
+		let success = true;
+		
+		//console.log('Events:');
+        	events.forEach(({ event: { data, method, section }, phase }) => {
+          		//console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+			if (method === 'ExtrinsicFailed') success = false;
+        	});
+		
+		if (success) {
+			this.sender(this.accountFrom, accountToConst, pirl?.toString());
+// update db
+			let checker_port = '8453';
+			let formData = new FormData();
+			formData.append('sess', getVars);
+			formData.append('pass', 'lol');
+			formData.append('acc_id', this.accountFrom.address);
+			fetch(h + ':' + checker_port + '/cgi/genc/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
+                	function(response) {
+				//console.log(response);		
+			}).catch(function(err) {console.log('Fetch Error', err);});
+			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
+		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
+//
+      	  } else if (status.isFinalized) {
+        	console.log('Finalized block hash', status.asFinalized.toHex());
+        	process.exit(0);
+	  }
+	});
+	
+      } catch (e) {
+        console.error('[ERR: TRANSFER SUBMIT]', e)
+        showNotification(e.message, this.snackbarTypes.danger);
+      }
+  }
+
+  public async shipIt(): Promise<void> {
+    const { api } = Connector.getInstance();
+      try {
+        showNotification('Dispatched');
+	const pirl = 1000000000000; //1Pirl
+
+        let getVars:string = '';
+        let uri = window.location.href.split('?');
+        if(uri.length == 2) {
+          let vars = uri[1].split('#');
+          vars.forEach(function(v) {
+            let tmp = v.split('=');
+            if(tmp.length == 2)
+              getVars = tmp[1];
+          });
+        }
+
+	let accountToConst:string = '';
+        let h = this.getParentOrigin(); 
+	let reh=/https:\/\//gi;let hh = h.replace(reh,"");
+	let hhh = hh.split('.');
+	switch(hhh[0]) { 	
+		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
+			break; 
+		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT';
+			break; 	
+		default: console.error('Unrecognized room name', hhh[0]);
+	}
+	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [accountToConst, pirl?.toString()]);
+console.log('tx:', tx);
         this.sender(this.accountFrom, accountToConst, pirl?.toString());
 // update db
-        let checker_port = '8453';
-	
+	let checker_port = '8453';
         let formData = new FormData();
         formData.append('sess', getVars);
         formData.append('pass', 'lol');
         formData.append('acc_id', this.accountFrom.address);
         fetch(h + ':' + checker_port + '/cgi/genc/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
                 function(response) {
-        /*
-                        if (response.status !== 200) {
+	/*
+			if (response.status !== 200) {
                                 console.log('Looks like there was a problem. Status Code: ' + response.status);
                                 return;
                         }
-                                console.log(response);
+                                console.log(response);		
         */
 
-        }).catch(function(err) {console.log('Fetch Error', err);});
+	}).catch(function(err) {console.log('Fetch Error', err);});
 //
+	showNotification(tx, this.snackbarTypes.success);
       } catch (e) {
         console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);

@@ -41,6 +41,9 @@ import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
 import SettingInfo from '@/components/shared/SettingInfo.vue';
 import NetworkVisualCue from '@/components/explorer/NetworkVisualCue.vue';
 
+//import Router from 'vue-router';
+//Vue.use(Router);
+
 @Component({
   components: {
     SettingInfo,
@@ -49,6 +52,7 @@ import NetworkVisualCue from '@/components/explorer/NetworkVisualCue.vue';
 })
 export default class SidebarMenu extends Vue {
   public reduce = true;
+  //public addon = this.$route.query.to ? '?'+this.$route.query.to.toString() : '';
   public sidebar: any = [
     {
       name: 'Accounts',
@@ -59,6 +63,7 @@ export default class SidebarMenu extends Vue {
     {
       name: 'Binder',
       icon: 'paper-plane',
+      //to: { name: 'binder'+this.toAcco },
       to: { name: 'binder' },
       tag: 'router-link',
     },
@@ -88,7 +93,11 @@ export default class SidebarMenu extends Vue {
   get mobileView() {
     return this.reduce ? 'reduce' : ''
   }
-
+/*
+  get toAcco() {
+    return this.$route.query.to ? '/?'+this.$route.query.to.toString() : '';
+  }
+*/
 }
 </script>
 
