@@ -21,8 +21,8 @@
         icon-left="paper-plane"
         outlined
         :disabled="!accountFrom"
-        @click="shipIt2">
-				Transfer 1 Pirl
+        @click="shipIt">
+				Transfer 5 Pirl
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -124,11 +124,11 @@ export default class Binder extends Vue {
     return "";
   }
   
-  public async shipIt2(): Promise<void> {
+  public async shipIt(): Promise<void> {
       const { api } = Connector.getInstance();
       try {
-        showNotification('Dispatched');	
-	const pirl = 1000000000000; //1Pirl
+        showNotification('Dispatched.. wait result of TX');	
+	const pirl = 5000000000000; //5Pirl
 	
 	const alicePair = keyring.getPair(this.accountFrom.address);
 	alicePair.decodePkcs8(this.password);
@@ -155,17 +155,23 @@ export default class Binder extends Vue {
 			break; 
 		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT';
 			break; 	
+		case 'www' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+			break; 
+		case 'room-house' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+			break;
+		case 'slotmachine' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+			break;
 		default: console.error('Unrecognized room name', hhh[0]);
 	}
 	
 	api.tx.balances
 	.transfer(accountToConst, pirl)
 	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
-	  console.log('Transaction status:', status.type);
-	  console.log('Status', status);
+	  //console.log('Transaction status:', status.type);
+	  //console.log('Status', status);
 
 	  if (status.isInBlock) {
-        	console.log('Included at block hash', status.asInBlock.toHex());
+        	//console.log('Included at block hash', status.asInBlock.toHex());
         	
 		let success = true;
 		
@@ -176,84 +182,31 @@ export default class Binder extends Vue {
         	});
 		
 		if (success) {
-			this.sender(this.accountFrom, accountToConst, pirl?.toString());
+			if (!(hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house'))) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
+			if (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) this.sender2();
 // update db
-			let checker_port = '8453';
+			let checker_port = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '8453';
+			let genc = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '/genc';
+			
 			let formData = new FormData();
 			formData.append('sess', getVars);
 			formData.append('pass', 'lol');
 			formData.append('acc_id', this.accountFrom.address);
-			fetch(h + ':' + checker_port + '/cgi/genc/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
+			fetch(h + ':' + checker_port + '/cgi' + genc + '/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
                 	function(response) {
 				//console.log(response);		
 			}).catch(function(err) {console.log('Fetch Error', err);});
 			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
-//
+
       	  } else if (status.isFinalized) {
-        	console.log('Finalized block hash', status.asFinalized.toHex());
+        	//console.log('Finalized block hash', status.asFinalized.toHex());
         	process.exit(0);
 	  }
 	});
 	
       } catch (e) {
-        console.error('[ERR: TRANSFER SUBMIT]', e)
-        showNotification(e.message, this.snackbarTypes.danger);
-      }
-  }
-
-  public async shipIt(): Promise<void> {
-    const { api } = Connector.getInstance();
-      try {
-        showNotification('Dispatched');
-	const pirl = 1000000000000; //1Pirl
-
-        let getVars:string = '';
-        let uri = window.location.href.split('?');
-        if(uri.length == 2) {
-          let vars = uri[1].split('#');
-          vars.forEach(function(v) {
-            let tmp = v.split('=');
-            if(tmp.length == 2)
-              getVars = tmp[1];
-          });
-        }
-
-	let accountToConst:string = '';
-        let h = this.getParentOrigin(); 
-	let reh=/https:\/\//gi;let hh = h.replace(reh,"");
-	let hhh = hh.split('.');
-	switch(hhh[0]) { 	
-		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
-			break; 
-		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT';
-			break; 	
-		default: console.error('Unrecognized room name', hhh[0]);
-	}
-	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [accountToConst, pirl?.toString()]);
-console.log('tx:', tx);
-        this.sender(this.accountFrom, accountToConst, pirl?.toString());
-// update db
-	let checker_port = '8453';
-        let formData = new FormData();
-        formData.append('sess', getVars);
-        formData.append('pass', 'lol');
-        formData.append('acc_id', this.accountFrom.address);
-        fetch(h + ':' + checker_port + '/cgi/genc/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
-                function(response) {
-	/*
-			if (response.status !== 200) {
-                                console.log('Looks like there was a problem. Status Code: ' + response.status);
-                                return;
-                        }
-                                console.log(response);		
-        */
-
-	}).catch(function(err) {console.log('Fetch Error', err);});
-//
-	showNotification(tx, this.snackbarTypes.success);
-      } catch (e) {
-        console.error('[ERR: TRANSFER SUBMIT]', e)
+        //console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);
       }
   }
@@ -296,9 +249,14 @@ console.log('tx:', tx);
     });
   }
 
-  public sender(accountFrom: KeyringPair, accountToConst: string, a: string) {
+  public sender1(accountFrom: KeyringPair, accountToConst: string, a: string) {
 	const mess = { action: 'Bound', from: accountFrom.address, to: accountToConst, sum: a, payload: 'function doSwitchOneMode(el){if(!playSomeMusic&&!shareSomeScreen){fullscreen=true; chat_shown=1;$("logger").click();let re=/video-/gi;let a=el.id.replace(re,"");let v=$("video-"+a);if(!v.fullscreenElement && !check_iOS()){v.requestFullscreen()}(function(){$("room-header").style.display="none";$("room-backer").style.display="block";if (!small_device) {$("room").style.minWidth = "480px";$("room").style.marginLeft = "0px";}if(Object.keys(participants).length){for(var key in participants){if(participants[key].name!=a){participants[key].dispose();delete participants[key]}}}let c=$("one-"+a);if (c) c.fade(0);}).delay(500)}else{if(playSomeMusic){flashText("PLAYING VIDEO! STOP?")}else{flashText("SHARING SCREEN! STOP?")}}}' };
-    window.parent.postMessage(JSON.stringify(mess), '*');   
+	window.parent.postMessage(JSON.stringify(mess), '*');   
+  }
+
+  public sender2() {
+	const mess = { action: 'Bound' };
+	window.parent.postMessage(JSON.stringify(mess), '*');   
   }
   
   public externalURI() {

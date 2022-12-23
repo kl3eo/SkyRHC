@@ -33,7 +33,7 @@ Vue.use(Buefy, {
     fas: {
       sizes: {
         'default': '',
-        'is-small': '1x',
+        'is-small': '2x',
         'is-medium': '2x',
         'is-large': '3x',
       },
