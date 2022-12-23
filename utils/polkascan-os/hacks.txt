@@ -1,0 +1,17 @@
+1. docker exec -it skypirl4_mysql_1 bash
+mysql -D polkascan2 -p
+
+mysql> select * from harvester_status;
++-------------------+--------------------------------------+---------------+-------+
+| key               | value                                | last_modified | notes |
++-------------------+--------------------------------------+---------------+-------+
+| INTEGRITY_HEAD    | 442519                               | NULL          | NULL  |
+| SEQUENCER_TASK_ID | 9ec2b325-b5f4-4792-85ff-a88d9ed38482 | NULL          | NULL  |
++-------------------+--------------------------------------+---------------+-------+
+2 rows in set (0.00 sec)
+
+manually set these to zero - and WAIT FOR SEQUENSOR TO START! be patient
+update harvester_status set value=null
+
+2. if errors on "default" value on startup: replace 
+/opt/nvme2/docker/overlay2/(.....)/diff/usr/local/lib/python3.6/site-packages/scalecodec/type_registry/ with this "type_registry/"
