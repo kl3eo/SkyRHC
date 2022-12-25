@@ -161,7 +161,8 @@ export default class Binder extends Vue {
 			break;
 		case 'slotmachine' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 			break;
-		default: console.error('Unrecognized room name', hhh[0]);
+		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+			console.log('Using default for room name', hhh[0]);
 	}
 	
 	api.tx.balances
