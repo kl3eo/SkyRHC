@@ -10,8 +10,11 @@ mysql> select * from harvester_status;
 +-------------------+--------------------------------------+---------------+-------+
 2 rows in set (0.00 sec)
 
-manually set these to zero - and WAIT FOR SEQUENSOR TO START! be patient
+manually set these to zero:
 update harvester_status set value=null
 
+ - and WAIT FOR SEQUENSOR TO START! be patient.. reload the subscan page, try it
+ 
+ 
 2. if errors on "default" value on startup: replace 
 /opt/nvme2/docker/overlay2/(.....)/diff/usr/local/lib/python3.6/site-packages/scalecodec/type_registry/ with this "type_registry/"

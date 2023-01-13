@@ -58,7 +58,13 @@ export default class Summary extends Vue {
   get formattedTotalIssuance() {
     const totalIssuance = this.totalIssuance.toString();
     
-    return formatBalance(totalIssuance, this.tokenSymbol, false);
+    //return formatBalance(totalIssuance, this.tokenSymbol, false);
+    let t = formatBalance(totalIssuance, this.tokenSymbol, false);
+    let tt = parseFloat(t);
+    let ttt = tt * 100;
+    let tttt = typeof(ttt) !== 'undefined' ? ttt.toString().split('.') : '';
+    let rest = typeof(tttt[1]) !== 'undefined' ? '.'+tttt[1].substring(0,2) : '';
+    return tttt[0]+rest+'M';
   }
   
   public sessionIsLoaded() {
