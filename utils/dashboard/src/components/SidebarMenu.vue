@@ -90,6 +90,12 @@ export default class SidebarMenu extends Vue {
       to: { name: 'transfer' },
       tag: 'router-link',
     },
+    {
+      name: 'CoinSwap',
+      icon: 'database',
+      to: { name: 'swapper' },
+      tag: 'router-link'
+    },
 /*
     {
       name: 'Democracy',

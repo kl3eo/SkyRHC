@@ -4,6 +4,7 @@ Vue.use(Router);
 import { apiEnabled } from '@/routeGuard';
 
 import Accounts from '@/router/accounts';
+import Swapper from '@/router/swapper';
 import Transfer from '@/router/transfer';
 import Explorer from '@/router/explorer';
 // import Staking from '@/router/staking';
@@ -29,6 +30,7 @@ export default new Router({
     },
     
     ...Accounts,
+    ...Swapper,
     ...Transfer, 
     ...Explorer,
     // ...Staking,

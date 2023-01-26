@@ -2,15 +2,19 @@
   <div id="transfer">
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
+    <DisabledInput v-if="conn.blockNumber"
+      label="Best Block" :value="conn.blockNumber" />
 		<b-field v-else>
-			<!-- p class="has-text-danger">You are not connected. 
+			<p class="has-text-danger">You are not connected. 
 				<router-link :to="{ name: 'settings' }">
 				Go to settings and pick node</router-link>
-			</p -->
-			<p>Connecting .. please wait.</p>
+			</p>
 		</b-field>
     <Dropdown mode='accounts' :externalAddress="transfer.from"
 			@selected="handleAccountSelectionFrom" />
+		<Dropdown :externalAddress="transfer.to"
+			@selected="handleAccountSelectionTo" />
+    <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
     <b-field label="password" class="password-wrapper">
       <b-input v-model="password" type="password" password-reveal>
       </b-input>
@@ -22,7 +26,7 @@
         outlined
         :disabled="!accountFrom"
         @click="shipIt">
-				Transfer 5 Pirl
+				Make Transfer
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -46,6 +50,7 @@ import { urlBuilderTransaction } from '@/utils/explorerGuide';
 import shortAddress from '@/utils/shortAddress';
 import exec from '@/utils/transactionExecutor';
 import { showNotification } from '@/utils/notification';
+import Web3 from 'web3';
 
 @Component({
   components: {
@@ -57,7 +62,7 @@ import { showNotification } from '@/utils/notification';
     DisabledInput,
   },
 })
-export default class Binder extends Vue {
+export default class Transfer extends Vue {
   public theme: string = 'substrate';
   public tx: string = '';
   public password: string = '';
@@ -73,6 +78,12 @@ export default class Binder extends Vue {
   private balance = 0;
   private accountFrom: any = null;
   private accountTo: any = null;
+  
+  public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
+  //public web3 = new Web3(this.newWsProvider());
+  public privateKey = '0x1a08de3400331190ae31ce760a5205d3742b260a0e09073c8c8f90688b61ae0d';
+  public addressFrom = '0x4073bc820e0933aa92853a44a3b216c359d776d8';
+  public addressTo = '0xA461883afc72f0Ae6A6274062Ac76d9BF7da66EB';  
 
   private snackbarTypes = {
     success: {
@@ -95,11 +106,24 @@ export default class Binder extends Vue {
       this.$store.state.explorer.chain, 
       this.$store.state.explorer.provider)
   }
-
-  getMessage(message: string) {
-    return message;
+  
+  newWsProvider () {
+      let provider = new Web3.providers.WebsocketProvider('wss://rpc.callisto.network')
+      return provider
   }
-
+  
+  makeUrlee (s: string) {
+      const h = this.getParentOrigin()
+      const reh = /https:\/\//gi
+      const hh = h.replace(reh, '')
+      const poh = hh.split(':')
+      const hhh = hh.split('.')
+      const checkerPort = (hhh[0] === 'aspen' || hhh[0] === 'cube') ? '' : ':8453'
+      const genc = (hhh[0] === 'dussel' || hhh[0] === 'coins') ? '' : '/genc'
+      const u = 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s
+      return u
+  }
+    
   inIframe () {
     try {
         return window.self !== window.top;
@@ -125,11 +149,25 @@ export default class Binder extends Vue {
     return "";
   }
   
+  public async shipIt_old(): Promise<void> {
+    const { api } = Connector.getInstance();
+      try {
+        showNotification('Dispatched');
+        console.log([this.accountTo.address, this.balance])
+	const pirl = this.balance/1000;
+	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, pirl?.toString()]);
+        showNotification(tx, this.snackbarTypes.success);
+      } catch (e) {
+        console.error('[ERR: TRANSFER SUBMIT]', e)
+        showNotification(e.message, this.snackbarTypes.danger);
+      }
+  }
+
   public async shipIt(): Promise<void> {
       const { api } = Connector.getInstance();
       try {
         showNotification('Dispatched.. wait result of TX');	
-	const pirl = 5000000000000; //5Pirl
+	const pirl = this.balance/1000;
 	
 	const alicePair = keyring.getPair(this.accountFrom.address);
 	alicePair.decodePkcs8(this.password);
@@ -149,28 +187,14 @@ export default class Binder extends Vue {
 
 	let accountToConst:string = '';
         let h = this.getParentOrigin(); 
-	let reh=/https:\/\//gi;let hh = h.replace(reh,"");
+	let reh=/https:\/\//gi;
+	let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
-	switch(hhh[0]) { 	
-		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
-			break; 
-		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT';
-			break; 	
-		case 'www' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
-			break; 
-		case 'room-house' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
-			break;
-		case 'slotmachine' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
-			break;
-		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
-			console.log('Using default for room name', hhh[0]);
-	}
-	
-	api.tx.balances
+	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
+	this.web3.eth.getTransactionCount(this.addressFrom).then( (curNonce) => {
+	 api.tx.balances
 	.transfer(accountToConst, pirl)
 	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
-	  //console.log('Transaction status:', status.type);
-	  //console.log('Status', status);
 
 	  if (status.isInBlock) {
         	//console.log('Included at block hash', status.asInBlock.toHex());
@@ -184,21 +208,53 @@ export default class Binder extends Vue {
         	});
 		
 		if (success) {
-			if (!(hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house'))) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
-			if (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) this.sender2();
+			// this.sender2();
 // update db
-			let checker_port = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '8453';
-			let genc = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '/genc';
-			
 			let formData = new FormData();
-			formData.append('sess', getVars);
-			formData.append('pass', 'lol');
-			formData.append('acc_id', this.accountFrom.address);
-			fetch(h + ':' + checker_port + '/cgi' + genc + '/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
-                	function(response) {
-				//console.log(response);		
+			let pi = pirl / 1000000000000;
+			let st = status.asInBlock.toHex();
+			formData.append('pass', 'shit');
+			formData.append('txs', st);
+			formData.append('sender', this.accountFrom.address);
+			formData.append('sumA', pi.toString());
+			formData.append('mode', 'i');
+			const s = 'resenter.pl';
+			const urlee = this.makeUrlee(s);
+// console.log('urlee is',urlee);
+			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then( (response) => {
+			 
+  			  const tx_send = {
+  			  from: this.addressFrom,
+  			  to: this.addressTo,
+  			  value: this.web3.utils.toWei(pi.toString(), 'ether'),
+  			  gas: 21000,
+  			  gasPrice: 20000000000,
+			  chainId: 820,
+			  nonce: curNonce
+  			  };
+			  this.web3.eth.accounts.signTransaction(tx_send, this.privateKey).then( async (signedTransaction) => {
+				//console.log(signedTransaction);
+			 	if (signedTransaction && signedTransaction.rawTransaction) {
+					let rawTx = signedTransaction.rawTransaction;
+					console.log('rawTx:', rawTx);
+					const receipt = await this.web3.eth.sendSignedTransaction(rawTx);
+			      		if (receipt && receipt.transactionHash) {
+						console.log('txHash', receipt.transactionHash);
+						let formData2 = new FormData()
+						formData2.append('pass', 'shit');
+						formData2.append('txs', st);
+						formData2.append('txr', receipt.transactionHash);
+						formData2.append('receiver', this.addressTo);
+						formData2.append('sumB', pi.toString());
+						formData2.append('mode', 'u');
+						const urlee = this.makeUrlee('resenter.pl');
+						fetch(urlee, {body: formData2, method: 'post', mode: 'no-cors'}).then(function (response) { }).catch(function (err) { console.log('Fetch Error', err) });
+			    		}	
+				}
+			  });
 			}).catch(function(err) {console.log('Fetch Error', err);});
-			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
+		  showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
+
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
       	  } else if (status.isFinalized) {
@@ -206,8 +262,8 @@ export default class Binder extends Vue {
         	process.exit(0);
 	  }
 	});
-	
-      } catch (e) {
+       }); //curNonce	
+      } catch (e) { //try
         //console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);
       }
@@ -249,11 +305,6 @@ export default class Binder extends Vue {
     Object.keys(value).map((item) => {
       (this as any)[item] = value[item];
     });
-  }
-
-  public sender1(accountFrom: KeyringPair, accountToConst: string, a: string) {
-	const mess = { action: 'Bound', from: accountFrom.address, to: accountToConst, sum: a, payload: 'function doSwitchOneMode(el){if(!playSomeMusic&&!shareSomeScreen){fullscreen=true; chat_shown=1;$("logger").click();let re=/video-/gi;let a=el.id.replace(re,"");let v=$("video-"+a);if(!v.fullscreenElement && !check_iOS()){v.requestFullscreen()}(function(){$("room-header").style.display="none";$("room-backer").style.display="block";if (!small_device) {$("room").style.minWidth = "480px";$("room").style.marginLeft = "0px";}if(Object.keys(participants).length){for(var key in participants){if(participants[key].name!=a){participants[key].dispose();delete participants[key]}}}let c=$("one-"+a);if (c) c.fade(0);}).delay(500)}else{if(playSomeMusic){flashText("PLAYING VIDEO! STOP?")}else{flashText("SHARING SCREEN! STOP?")}}}' };
-	window.parent.postMessage(JSON.stringify(mess), '*');   
   }
 
   public sender2() {

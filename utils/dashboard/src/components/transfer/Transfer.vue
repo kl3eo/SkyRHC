@@ -100,8 +100,6 @@ export default class Transfer extends Vue {
       this.$store.state.explorer.provider)
   }
 
-
-
   public async shipIt(): Promise<void> {
     const { api } = Connector.getInstance();
       try {
