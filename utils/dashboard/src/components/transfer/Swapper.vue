@@ -1,5 +1,6 @@
 <template>
   <div id="transfer">
+   <h1>Swap SkyPirl to CLO {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} CLO. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
     <DisabledInput v-if="conn.blockNumber"
@@ -12,9 +13,10 @@
 		</b-field>
     <Dropdown mode='accounts' :externalAddress="transfer.from"
 			@selected="handleAccountSelectionFrom" />
-		<Dropdown :externalAddress="transfer.to"
-			@selected="handleAccountSelectionTo" />
     <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
+    <b-field label="To:">
+      <b-input v-model="accountTo" placeholder="0x..." @input="handleAccountSelectionTo(accountTo)"></b-input>
+    </b-field>
     <b-field label="password" class="password-wrapper">
       <b-input v-model="password" type="password" password-reveal>
       </b-input>
@@ -77,13 +79,17 @@ export default class Transfer extends Vue {
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
   private accountFrom: any = null;
-  private accountTo: any = null;
+  private accountToEth: string = '';
+  private doghouse = 'shitshit';
+  private avail = 0;
+  private trade_balance = 0;
+  public ratio = 5;
+  public denom1 = 1000000000000; //10**12 for SP
+  public denom2 = 1000000000000000000; //10**18 for CLO
   
   public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
-  //public web3 = new Web3(this.newWsProvider());
-  public privateKey = '0x1a08de3400331190ae31ce760a5205d3742b260a0e09073c8c8f90688b61ae0d';
-  public addressFrom = '0x4073bc820e0933aa92853a44a3b216c359d776d8';
-  public addressTo = '0xA461883afc72f0Ae6A6274062Ac76d9BF7da66EB';  
+  private fucfuc = '0xfuckfuck';
+  private ducduc = '0xduckduck';
 
   private snackbarTypes = {
     success: {
@@ -113,7 +119,8 @@ export default class Transfer extends Vue {
   }
   
   makeUrlee (s: string) {
-      const h = this.getParentOrigin()
+      // const h = this.getParentOrigin()
+      const h = 'https://coins.room-house.com'; //hack ash
       const reh = /https:\/\//gi
       const hh = h.replace(reh, '')
       const poh = hh.split(':')
@@ -148,22 +155,24 @@ export default class Transfer extends Vue {
 
     return "";
   }
-  
-  public async shipIt_old(): Promise<void> {
-    const { api } = Connector.getInstance();
-      try {
-        showNotification('Dispatched');
-        console.log([this.accountTo.address, this.balance])
-	const pirl = this.balance/1000;
-	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, pirl?.toString()]);
-        showNotification(tx, this.snackbarTypes.success);
-      } catch (e) {
-        console.error('[ERR: TRANSFER SUBMIT]', e)
-        showNotification(e.message, this.snackbarTypes.danger);
-      }
+
+  public setAvail(): void {
+    this.web3.eth.getBalance(this.ducduc).then( (bal) => {
+      this.trade_balance = parseInt(bal);
+      this.avail = parseInt(bal) / this.denom2;
+      return;
+    }).catch(function(err) { console.log('Error', err);});    
   }
 
   public async shipIt(): Promise<void> {
+      if (!(this.balance > 0)) {showNotification('Swap must be > 0!', this.snackbarTypes.danger); return;}
+      const want_to_swap = (this.balance * 1000) / this.ratio;
+
+//console.log('tb:', this.trade_balance, 'bal:', this.balance, 'ws:', want_to_swap)
+      if (this.trade_balance < want_to_swap + 21000) {
+      	showNotification('Available balance is only ' + this.trade_balance / this.denom2 +', yet you want to receive ' + want_to_swap / this.denom2, this.snackbarTypes.danger);
+	return;
+      }
       const { api } = Connector.getInstance();
       try {
         showNotification('Dispatched.. wait result of TX');	
@@ -191,7 +200,7 @@ export default class Transfer extends Vue {
 	let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
-	this.web3.eth.getTransactionCount(this.addressFrom).then( (curNonce) => {
+	this.web3.eth.getTransactionCount(this.ducduc).then( (curNonce) => {
 	 api.tx.balances
 	.transfer(accountToConst, pirl)
 	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
@@ -211,9 +220,12 @@ export default class Transfer extends Vue {
 			// this.sender2();
 // update db
 			let formData = new FormData();
-			let pi = pirl / 1000000000000;
+			let pi = pirl / this.denom1;
+			let pi_ratio = pi / this.ratio;
+			showNotification('Signing TX: please wait..');
+
 			let st = status.asInBlock.toHex();
-			formData.append('pass', 'shit');
+			formData.append('pass', this.doghouse);
 			formData.append('txs', st);
 			formData.append('sender', this.accountFrom.address);
 			formData.append('sumA', pi.toString());
@@ -224,32 +236,36 @@ export default class Transfer extends Vue {
 			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then( (response) => {
 			 
   			  const tx_send = {
-  			  from: this.addressFrom,
-  			  to: this.addressTo,
-  			  value: this.web3.utils.toWei(pi.toString(), 'ether'),
-  			  gas: 21000,
-  			  gasPrice: 20000000000,
-			  chainId: 820,
-			  nonce: curNonce
+  			    from: this.ducduc,
+  			    to: this.accountToEth,
+  			    value: this.web3.utils.toWei(pi_ratio.toString(), 'ether'),
+  			    gas: 21000,
+  			    gasPrice: 20000000000,
+			    chainId: 820,
+			    nonce: curNonce
   			  };
-			  this.web3.eth.accounts.signTransaction(tx_send, this.privateKey).then( async (signedTransaction) => {
+			  this.web3.eth.accounts.signTransaction(tx_send, this.fucfuc).then( async (signedTransaction) => {
 				//console.log(signedTransaction);
 			 	if (signedTransaction && signedTransaction.rawTransaction) {
 					let rawTx = signedTransaction.rawTransaction;
-					console.log('rawTx:', rawTx);
+					//console.log('rawTx:', rawTx);
+					showNotification('Sending ' + pi_ratio.toString() +' CLO to ' + this.accountToEth +': please wait..');
 					const receipt = await this.web3.eth.sendSignedTransaction(rawTx);
 			      		if (receipt && receipt.transactionHash) {
 						console.log('txHash', receipt.transactionHash);
+						showNotification('Success: sent ' + pi_ratio.toString() +' CLO to ' + this.accountToEth +', TX hash: ' + receipt.transactionHash);
 						let formData2 = new FormData()
-						formData2.append('pass', 'shit');
+						formData2.append('pass', this.doghouse);
 						formData2.append('txs', st);
 						formData2.append('txr', receipt.transactionHash);
-						formData2.append('receiver', this.addressTo);
-						formData2.append('sumB', pi.toString());
+						formData2.append('receiver', this.accountToEth);
+						formData2.append('sumB', pi_ratio.toString());
 						formData2.append('mode', 'u');
 						const urlee = this.makeUrlee('resenter.pl');
 						fetch(urlee, {body: formData2, method: 'post', mode: 'no-cors'}).then(function (response) { }).catch(function (err) { console.log('Fetch Error', err) });
-			    		}	
+			    		} else {
+						showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);
+					}	
 				}
 			  });
 			}).catch(function(err) {console.log('Fetch Error', err);});
@@ -297,10 +313,10 @@ export default class Transfer extends Vue {
     this.accountFrom = account;
   }
 
-  public handleAccountSelectionTo(account: KeyringPair) {
-    this.accountTo = account;
+  public handleAccountSelectionTo(account: string) {
+    this.accountToEth = account;
   }
-
+  
   public handleValue(value: any) {
     Object.keys(value).map((item) => {
       (this as any)[item] = value[item];
@@ -326,6 +342,7 @@ export default class Transfer extends Vue {
     this.getIconTheme();
     this.loadExternalInfo();
     this.externalURI();
+    this.setAvail();
   }
 
 }
