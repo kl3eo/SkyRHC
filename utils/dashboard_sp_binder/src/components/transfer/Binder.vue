@@ -107,7 +107,20 @@ export default class Binder extends Vue {
         return true;
     }
   }
-
+  
+  makeUrlee (s: string) {
+      const h = this.getParentOrigin()
+      const reh = /https:\/\//gi
+      const hh = h.replace(reh, '')
+      const poh = hh.split(':')
+      const hhh = hh.split('.')
+      const boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house');
+      const checkerPort = boo ? '' : ':8453'
+      const genc = boo ? '' : '/genc'
+      const u = 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s
+      return u
+  }
+    
   getParentOrigin() {
     const locationAreDisctint = (window.location !== window.parent.location);
     const parentOrigin = ((locationAreDisctint ? document.referrer : document.location) || "").toString();
@@ -163,53 +176,46 @@ export default class Binder extends Vue {
 		case 'slotmachine' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 			break;
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
-			console.log('Using default for room name', hhh[0]);
 	}
-	
+	const urlee = this.makeUrlee('tester.pl');
+	let fData = new FormData();
+	fData.append('sess', getVars);
+	fData.append('pass', 'lol');
+	fData.append('acc_id', this.accountFrom.address);
+	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
 	api.tx.balances
-	.transfer(accountToConst, pirl)
-	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
-	  //console.log('Transaction status:', status.type);
-	  //console.log('Status', status);
+	  .transfer(accountToConst, pirl)
+	  .signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
 
-	  if (status.isInBlock) {
-        	//console.log('Included at block hash', status.asInBlock.toHex());
+	    if (status.isInBlock) {
         	
 		let success = true;
-		
-		//console.log('Events:');
-        	events.forEach(({ event: { data, method, section }, phase }) => {
-          		//console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-			if (method === 'ExtrinsicFailed') success = false;
-        	});
+
+        	events.forEach(({ event: { data, method, section }, phase }) => {if (method === 'ExtrinsicFailed') success = false;});
 		
 		if (success) {
-			if (!(hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house'))) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
-			if (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) this.sender2();
-// update db
-			let checker_port = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '8453';
-			let genc = (hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')) ? '' : '/genc';
+			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')
+			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
+			if (boo) this.sender2();
 			
 			let formData = new FormData();
 			formData.append('sess', getVars);
 			formData.append('pass', 'lol');
+			formData.append('bhash', status.asInBlock.toHex());
 			formData.append('acc_id', this.accountFrom.address);
-			fetch(h + ':' + checker_port + '/cgi' + genc + '/tester.pl', {body: formData, method: 'post', mode: 'no-cors'}).then(
-                	function(response) {
-				//console.log(response);		
+			
+			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then(
+                	function(response) {		
 			}).catch(function(err) {console.log('Fetch Error', err);});
 			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
-      	  } else if (status.isFinalized) {
-        	//console.log('Finalized block hash', status.asFinalized.toHex());
-        	process.exit(0);
-	  }
-	});
+      	    } else if (status.isFinalized) {
+	    }
+	}); //api
 	
       } catch (e) {
-        //console.error('[ERR: TRANSFER SUBMIT]', e)
-        showNotification(e.message, this.snackbarTypes.danger);
+       showNotification(e.message, this.snackbarTypes.danger);
       }
   }
 

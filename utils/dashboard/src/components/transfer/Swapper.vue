@@ -80,7 +80,7 @@ export default class Transfer extends Vue {
   private balance = 0;
   private accountFrom: any = null;
   private accountToEth: string = '';
-  private doghouse = 'shitshit';
+  private doghouse = 'shit';
   private avail = 0;
   private trade_balance = 0;
   public ratio = 5;
@@ -88,8 +88,8 @@ export default class Transfer extends Vue {
   public denom2 = 1000000000000000000; //10**18 for CLO
   
   public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
-  private fucfuc = '0xfuckfuck';
-  private ducduc = '0xduckduck';
+  private fucfuc = 'fucfuc';
+  private ducduc = 'ducduc';
 
   private snackbarTypes = {
     success: {
@@ -157,7 +157,7 @@ export default class Transfer extends Vue {
   }
 
   public setAvail(): void {
-    this.web3.eth.getBalance(this.ducduc).then( (bal) => {
+    this.web3.eth.getBalance(this.lauraBirdley).then( (bal) => {
       this.trade_balance = parseInt(bal);
       this.avail = parseInt(bal) / this.denom2;
       return;
@@ -182,17 +182,6 @@ export default class Transfer extends Vue {
 	alicePair.decodePkcs8(this.password);
 	
 	const { nonce } = await api.query.system.account(this.accountFrom.address);
-        
-	let getVars:string = '';
-        let uri = window.location.href.split('?');
-        if(uri.length == 2) {
-          let vars = uri[1].split('#');
-          vars.forEach(function(v) {
-            let tmp = v.split('=');
-            if(tmp.length == 2)
-              getVars = tmp[1];
-          });
-        }
 
 	let accountToConst:string = '';
         let h = this.getParentOrigin(); 
@@ -200,7 +189,7 @@ export default class Transfer extends Vue {
 	let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
-	this.web3.eth.getTransactionCount(this.ducduc).then( (curNonce) => {
+	this.web3.eth.getTransactionCount(this.lauraBirdley).then( (curNonce) => {
 	 api.tx.balances
 	.transfer(accountToConst, pirl)
 	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
@@ -217,8 +206,7 @@ export default class Transfer extends Vue {
         	});
 		
 		if (success) {
-			// this.sender2();
-// update db
+
 			let formData = new FormData();
 			let pi = pirl / this.denom1;
 			let pi_ratio = pi / this.ratio;
@@ -236,7 +224,7 @@ export default class Transfer extends Vue {
 			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then( (response) => {
 			 
   			  const tx_send = {
-  			    from: this.ducduc,
+  			    from: this.lauraBirdley,
   			    to: this.accountToEth,
   			    value: this.web3.utils.toWei(pi_ratio.toString(), 'ether'),
   			    gas: 21000,
@@ -244,7 +232,7 @@ export default class Transfer extends Vue {
 			    chainId: 820,
 			    nonce: curNonce
   			  };
-			  this.web3.eth.accounts.signTransaction(tx_send, this.fucfuc).then( async (signedTransaction) => {
+			  this.web3.eth.accounts.signTransaction(tx_send, this.iraWells).then( async (signedTransaction) => {
 				//console.log(signedTransaction);
 			 	if (signedTransaction && signedTransaction.rawTransaction) {
 					let rawTx = signedTransaction.rawTransaction;
@@ -273,11 +261,8 @@ export default class Transfer extends Vue {
 
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
-      	  } else if (status.isFinalized) {
-        	//console.log('Finalized block hash', status.asFinalized.toHex());
-        	process.exit(0);
-	  }
-	});
+      	  }// isInBlock
+	}); // api transfer
        }); //curNonce	
       } catch (e) { //try
         //console.error('[ERR: TRANSFER SUBMIT]', e)
