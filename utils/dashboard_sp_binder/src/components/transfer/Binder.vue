@@ -183,9 +183,8 @@ export default class Binder extends Vue {
 	fData.append('pass', 'lol');
 	fData.append('acc_id', this.accountFrom.address);
 	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
-	api.tx.balances
-	  .transfer(accountToConst, pirl)
-	  .signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
+	const trans = api.tx.balances.transfer(accountToConst, pirl);
+	trans.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
 
 	    if (status.isInBlock) {
         	
@@ -198,10 +197,13 @@ export default class Binder extends Vue {
 			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
 			if (boo) this.sender2();
 			
+			const thx = trans.hash.toHex();
+			
 			let formData = new FormData();
 			formData.append('sess', getVars);
 			formData.append('pass', 'lol');
 			formData.append('bhash', status.asInBlock.toHex());
+			formData.append('txhash', thx);
 			formData.append('acc_id', this.accountFrom.address);
 			
 			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then(
