@@ -80,6 +80,7 @@ export default class Transfer extends Vue {
   private balance = 0;
   private accountFrom: any = null;
   private accountToEth: string = '';
+  private doghouse = 'shit';
   private avail = 0;
   private trade_balance = 0;
   public ratio = 5;
@@ -87,7 +88,8 @@ export default class Transfer extends Vue {
   public denom2 = 1000000000000000000; //10**18 for CLO
   
   public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
-  private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
+  private fucfuc = 'fucfuc';
+  private ducduc = 'ducduc';
 
   private snackbarTypes = {
     success: {
@@ -168,15 +170,20 @@ export default class Transfer extends Vue {
 	console.log('set session', result);
     }).catch(function(err) { console.log('Error', err);});    
   }
-  
+
+  public isToAddressValid () {
+      if (!this.accountToEth) {
+        return false
+      }
+      return /0x[a-zA-Z0-9]{40}/.test(this.accountToEth)
+    }
+
   public async shipIt(): Promise<void> {
-     
       if (!(this.balance > 0)) {showNotification('Swap must be > 0!', this.snackbarTypes.danger); return;}
-      if (!/0x[a-zA-Z0-9]{40}/.test(this.accountToEth)) {showNotification('Send address is not valid!', this.snackbarTypes.danger); return;}
-      
+      if (!this.isToAddressValid) {showNotification('Send address is not valid!', this.snackbarTypes.danger); return;}
       const want_to_swap = (this.balance * 1000) / this.ratio;
 
-      //console.log('tb:', this.trade_balance, 'bal:', this.balance, 'ws:', want_to_swap)
+//console.log('tb:', this.trade_balance, 'bal:', this.balance, 'ws:', want_to_swap)
       if (this.trade_balance < want_to_swap + 21000) {
       	showNotification('Available balance is only ' + this.trade_balance / this.denom2 +', yet you want to receive ' + want_to_swap / this.denom2, this.snackbarTypes.danger);
 	return;
@@ -197,56 +204,80 @@ export default class Transfer extends Vue {
 	let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
-	this.web3.eth.getTransactionCount(this.lauraBirdley).then( async (curNonce) => {
-	  
-	  // seed lw_sessions
-	  
-	  let fData = new FormData();
-	  fData.append('pass', 'lol');
-	  fData.append('acc_id', this.accountFrom.address);
-	  fData.append('addr', this.accountToEth);
-	  
-	  const urlee_sessions = this.makeUrlee('tester_lw.pl','i');
-	  await fetch(urlee_sessions, {body: fData, method: 'post', credentials: 'include'})
-	  .then( (response) => response.json())
-	  .then( (result) => console.log('Seed lw_sessions', result))
-	  .catch(function(err) {console.log('Fetch fData Error', err);});
-	  
-	  const trans = api.tx.balances.transfer(accountToConst, pirl);
-	  trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
+	this.web3.eth.getTransactionCount(this.lauraBirdley).then( (curNonce) => {
+	 api.tx.balances
+	.transfer(accountToConst, pirl)
+	.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
 
-	    if (status.isInBlock) {
+	  if (status.isInBlock) {
+        	//console.log('Included at block hash', status.asInBlock.toHex());
         	
 		let success = true;
-
-        	events.forEach(({ event: { data, method, section }, phase }) => {if (method === 'ExtrinsicFailed') success = false;});
+		
+		//console.log('Events:');
+        	events.forEach(({ event: { data, method, section }, phase }) => {
+          		//console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+			if (method === 'ExtrinsicFailed') success = false;
+        	});
 		
 		if (success) {
-			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 
-			const thx = trans.hash.toHex();
+			let formData = new FormData();
 			let pi = pirl / this.denom1;
-			// update lw_sessions on first part of swap success
-			
-			let fData3 = new FormData();
-			fData3.append('pass', 'lol');
-			fData3.append('bhash', status.asInBlock.toHex());
-			fData3.append('txhash', thx);
-			fData3.append('acc_id', this.accountFrom.address);
-			
-			await fetch(urlee_sessions, {body: fData3, method: 'post', credentials: 'include'})
-			.then( (response) => response.json())
-			.then( (result) => console.log('Update lw_sessions', result))	
-			.catch(function(err) {console.log('Fetch fData3 Error', err);});
-			
+			let pi_ratio = pi / this.ratio;
 			showNotification('Signing TX: please wait..');
-			
+
+			let st = status.asInBlock.toHex();
+			formData.append('pass', this.doghouse);
+			formData.append('txs', st);
+			formData.append('sender', this.accountFrom.address);
+			formData.append('sumA', pi.toString());
+			formData.append('mode', 'i');
+			const urlee = this.makeUrlee('resenter.pl','e');
+// console.log('urlee is',urlee);
+			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then( (response) => {
+			 
+  			  const tx_send = {
+  			    from: this.lauraBirdley,
+  			    to: this.accountToEth,
+  			    value: this.web3.utils.toWei(pi_ratio.toString(), 'ether'),
+  			    gas: 21000,
+  			    gasPrice: 20000000000,
+			    chainId: 820,
+			    nonce: curNonce
+  			  };
+			  this.web3.eth.accounts.signTransaction(tx_send, this.iraWells).then( async (signedTransaction) => {
+				//console.log(signedTransaction);
+			 	if (signedTransaction && signedTransaction.rawTransaction) {
+					let rawTx = signedTransaction.rawTransaction;
+					//console.log('rawTx:', rawTx);
+					showNotification('Sending ' + pi_ratio.toString() +' CLO to ' + this.accountToEth +': please wait..');
+					const receipt = await this.web3.eth.sendSignedTransaction(rawTx);
+			      		if (receipt && receipt.transactionHash) {
+						console.log('txHash', receipt.transactionHash);
+						showNotification('Success: sent ' + pi_ratio.toString() +' CLO to ' + this.accountToEth +', TX hash: ' + receipt.transactionHash);
+						let formData2 = new FormData()
+						formData2.append('pass', this.doghouse);
+						formData2.append('txs', st);
+						formData2.append('txr', receipt.transactionHash);
+						formData2.append('receiver', this.accountToEth);
+						formData2.append('sumB', pi_ratio.toString());
+						formData2.append('mode', 'u');
+						const urlee = this.makeUrlee('resenter.pl','e');
+						fetch(urlee, {body: formData2, method: 'post', mode: 'no-cors'}).then(function (response) { }).catch(function (err) { console.log('Fetch Error', err) });
+			    		} else {
+						showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);
+					}	
+				}
+			  });
+			}).catch(function(err) {console.log('Fetch Error', err);});
+		  showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
+
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
-      	    } else if (status.isFinalized) {
-	    }
-	  }); //api
-	}); //curNonce	
+      	  }// isInBlock
+	}); // api transfer
+       }); //curNonce	
       } catch (e) { //try
         //console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);
@@ -254,13 +285,12 @@ export default class Transfer extends Vue {
   }
 
   @Watch('$store.state.keyringLoaded')
-
   public mapAccounts(): void {
     if (this.isKeyringLoaded() === true) {
       this.keyringAccounts = keyring.getPairs();
     }
   }
-   
+
   public isKeyringLoaded() {
     return this.$store.state.keyringLoaded;
   }

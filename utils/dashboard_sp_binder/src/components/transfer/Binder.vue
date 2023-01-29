@@ -162,7 +162,7 @@ export default class Binder extends Vue {
 
 	let accountToConst:string = '';
         let h = this.getParentOrigin(); 
-	let reh=/https:\/\//gi;let hh = h.replace(reh,"");
+	let reh=/https:\/\//gi; let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	switch(hhh[0]) { 	
 		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
