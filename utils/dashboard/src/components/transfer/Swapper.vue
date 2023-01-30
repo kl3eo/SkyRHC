@@ -247,8 +247,6 @@ export default class Transfer extends Vue {
 			})	
 			.catch(function(err) {console.log('Fetch fData3 Error', err);});
 			
-			// showNotification('Success');
-			
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
       	    } else if (status.isFinalized) {
