@@ -25,11 +25,13 @@ export default class SettingChooserExplorer extends Vue {
   @Prop() public addMethod!: string;
 
   get options() {
-    return this.$store.state.explorerOptions.availableOptions[this.selector];
+    // if (typeof(this.$store.state.explorerOptions) !== 'undefined' &&  typeof(this.$store.state ) !== 'undefined') { return this.$store.state.explorerOptions.availableOptions[this.selector]; } else {return null;}
+    return null;
   }
 
   get selected() {
-    return this.$store.state.explorerOptions.availableOptions[this.selector][this.defaultValue].value;
+    // if (typeof(this.$store.state.explorerOptions) !== 'undefined' &&  typeof(this.$store.state ) !== 'undefined') { return this.$store.state.explorerOptions.availableOptions[this.selector][this.defaultValue].value; } else { return null; }
+    return null;
   }
 
   set selected(value) {
@@ -37,7 +39,7 @@ export default class SettingChooserExplorer extends Vue {
   }
 
   public async mounted() {
-    this.$store.commit('setExplorerOptions',{ availableOptions: {
+    if (this.$store) this.$store.commit('setExplorerOptions',{ availableOptions: {
       provider: [ 
         { text: 'Subscan', value: 'subscan' },
         { text: 'Polkascan', value: 'polkascan'} 

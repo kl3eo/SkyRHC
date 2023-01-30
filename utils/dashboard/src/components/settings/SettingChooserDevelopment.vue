@@ -26,7 +26,7 @@ export default class SettingChooserDevelopment extends Vue {
   }
 
   get selected() {
-    return this.$store.state.development[this.selector].value;
+    if (this.$store.state.development[this.selector] && this.$store.state && this.$store) { return this.$store.state.development[this.selector].value; } else { return null;}
   }
 
   set selected(value) {
