@@ -197,7 +197,7 @@ export default class Transfer extends Vue {
 	let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
-	this.web3.eth.getTransactionCount(this.lauraBirdley).then( async (curNonce) => {
+	this.web3.eth.getTransactionCount(this.lauraBirdley).then( async (curNonce) => { // check if lauraBirdley is here
 	  
 	  // seed lw_sessions
 	  
@@ -222,6 +222,8 @@ export default class Transfer extends Vue {
         	events.forEach(({ event: { data, method, section }, phase }) => {if (method === 'ExtrinsicFailed') success = false;});
 		
 		if (success) {
+			
+			showNotification('Please await..working..');
 			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 
 			const thx = trans.hash.toHex();
@@ -236,10 +238,16 @@ export default class Transfer extends Vue {
 			
 			await fetch(urlee_sessions, {body: fData3, method: 'post', credentials: 'include'})
 			.then( (response) => response.json())
-			.then( (result) => console.log('Update lw_sessions', result))	
+			.then( (result) => { console.log('Update lw_sessions', result); 
+			  if (/0x[a-zA-Z0-9]{64}/.test(result.result)) {
+			    showNotification('Sent ' + pi / this.ratio + ' CLO to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success);
+			  } else {
+			    showNotification('CLO transaction error', this.snackbarTypes.danger); return;
+			  }
+			})	
 			.catch(function(err) {console.log('Fetch fData3 Error', err);});
 			
-			showNotification('Signing TX: please wait..');
+			// showNotification('Success');
 			
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 
