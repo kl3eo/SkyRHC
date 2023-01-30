@@ -4,7 +4,7 @@ const urlBuilderBlockNumber = (value: string, chain: string, provider: string): 
     return `https://${chain}.${provider}.io/block/${value}`
   }
 
-  if (provider === 'subscan' && chain === 'skypirl') {
+  if (provider === 'subscan' && chain === 'skypirl' && typeof(value) !== 'undefined') {
     value = value.split(',').join('')
     return `https://${provider}.${chain}.org/skypirl4/block/${value}`
   }
@@ -19,7 +19,7 @@ const urlBuilderAccount = (value: string, chain: string, provider: string): any 
     return `https://${chain}.${provider}.io/account/${value}`
   }
 
-  if (provider === 'subscan' && chain === 'skypirl') {
+  if (provider === 'subscan' && chain === 'skypirl' && typeof(value) !== 'undefined') {
     value = value.split(',').join('')
     return `https://${provider}.${chain}.org/skypirl4/account/${value}`
   }
@@ -34,7 +34,7 @@ const urlBuilderTransaction = (value: string, chain: string, provider: string): 
     return `https://${chain}.${provider}.io/extrinsic/${value}`
   }
 
-  if (provider === 'subscan' && chain === 'skypirl') {
+  if (provider === 'subscan' && chain === 'skypirl' && typeof(value) !== 'undefined') {
     value = value.split(',').join('')
     return `https://${provider}.${chain}.org/skypirl4/extrinsic/${value}`
   }
