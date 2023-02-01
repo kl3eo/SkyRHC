@@ -184,7 +184,7 @@ export default class Binder extends Vue {
 	fData.append('acc_id', this.accountFrom.address);
 	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
 	const trans = api.tx.balances.transfer(accountToConst, pirl);
-	trans.signAndSend(alicePair, { nonce }, ({ events = [], status }) => {
+	trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
 
 	    if (status.isInBlock) {
         	
@@ -193,10 +193,7 @@ export default class Binder extends Vue {
         	events.forEach(({ event: { data, method, section }, phase }) => {if (method === 'ExtrinsicFailed') success = false;});
 		
 		if (success) {
-			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')
-			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
-			if (boo) this.sender2();
-			
+
 			const thx = trans.hash.toHex();
 			
 			let formData = new FormData();
@@ -206,9 +203,14 @@ export default class Binder extends Vue {
 			formData.append('txhash', thx);
 			formData.append('acc_id', this.accountFrom.address);
 			
-			fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then(
+			await fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then(
                 	function(response) {		
 			}).catch(function(err) {console.log('Fetch Error', err);});
+			
+			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')
+			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
+			if (boo) this.sender2();
+						
 			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
 

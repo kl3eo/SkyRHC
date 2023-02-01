@@ -163,7 +163,7 @@ export default class Transfer extends Vue {
 
   public setCoo(): void {
     const urlee = this.makeUrlee('action_lw','i');
-    //const urlee = this.getParentOrigin() + '/cgi/genc/action_lw';
+
     fetch(urlee).then( (response) => response.json()).then( (result) => {
 	console.log('set session', result);
     }).catch(function(err) { console.log('Error', err);});    
