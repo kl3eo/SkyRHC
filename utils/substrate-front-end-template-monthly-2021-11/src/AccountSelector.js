@@ -82,7 +82,7 @@ function Main (props) {
         <Menu.Menu position='right' style={{ alignItems: 'center' }}>
           { !accountSelected
             ? <span style={{ marginRight: '5px' }}>
-              <button style={{ paddingLeft: '8px', paddingRight: '8px', minWidth: '84px' }} onClick={sender}>CREATE</button>
+              <button style={{ paddingLeft: '8px', paddingRight: '8px', minWidth: '84px' }} onClick={sender}>TICKET</button>
             </span>
             : null }
           <CopyToClipboard text={accountSelected}>

@@ -87,7 +87,8 @@ export default class Transfer extends Vue {
   public denom2 = 1000000000000000000; //10**18 for CLO
   
   public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
-  private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
+  // private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
+  private lauraBirdley = '0xd3f3f015873f9cd8d6698b688b109bcd33222037';
 
   private snackbarTypes = {
     success: {
