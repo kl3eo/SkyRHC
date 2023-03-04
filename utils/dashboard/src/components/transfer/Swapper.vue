@@ -82,7 +82,7 @@ export default class Transfer extends Vue {
   private accountToEth: string = '';
   private avail = 0;
   private trade_balance = 0;
-  public ratio = 5;
+  public ratio = 1.5;
   public denom1 = 1000000000000; //10**12 for SP
   public denom2 = 1000000000000000000; //10**18 for CLO
   
