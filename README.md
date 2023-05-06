@@ -17,13 +17,16 @@ BUILD
 	rustc --version
 
 
-	git clone https://github.com/kl3eo/SkyPirl
+	git clone https://github.com/kl3eo/SkyRHC
 	cd pirl-0.8.29
 	./scripts/init.sh
 
 	cargo build --release
 	strip target/release/pirl
-
+	
+	=========================
+	=========================
+	
 	runtime only:
 	cd pirl-0.8.25
 	cargo +nightly-2020-10-06-x86_64-unknown-linux-gnu  build -p pirl-runtime --release
@@ -34,8 +37,8 @@ START NODE
 	./target/release/pirl --bootnodes /ip4/38.242.141.1/tcp/30338/p2p/12D3KooWDZvsdFshnFeDJKxVrtWxFHpZP4VxTk1xJUxx6a4ZLDWF --name <YOUR_NODE>
 
 
-USE BINARY DISTRO
-=================
+USE PRE-COMPILED BINARY
+=======================
 
 Download "export.tar.gz", untar it and follow the README. This is a self-contained archive with the binary and libs supposed to run on any reasonable Linux: Centos, Ubuntu, Debian, etc.
 The binary is built on Centos 8, with its glibc 2.28 included in the "export" folder.
