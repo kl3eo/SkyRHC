@@ -1,12 +1,13 @@
-# SkyPirl
-SkyPirl is a blockchain and a coin with roots in Polkadot and Pirl 2.0
+# SkyRHC
+SkyRHC is a blockchain and a coin with roots in Polkadot and Pirl 2.0
 
 HISTORY
 =======
 
 	# Forked from Pirl2.0 on July 23, 2021;
 	# Forked from SkyPirl2 on June 20, 2022;
-	# Forked from SkyPirl3 on Oct 18, 2022.
+	# Forked from SkyPirl3 on Oct 18, 2022;
+	# Renamed to SkyRHC on May 6, 2023;
 
 BUILD
 =====
@@ -23,13 +24,14 @@ BUILD
 	cargo build --release
 	strip target/release/pirl
 
-	runtime only: 
+	runtime only:
+	cd pirl-0.8.25
 	cargo +nightly-2020-10-06-x86_64-unknown-linux-gnu  build -p pirl-runtime --release
 
 START NODE
 ==========
 
-	./target/release/pirl --bootnodes /ip4/164.68.105.131/tcp/30325/p2p/12D3KooWAPQYbo6TzWUSeB8bXbnKNRfwUfnPExauawmbiGX9cavH --bootnodes /ip4/38.242.141.1/tcp/30338/p2p/12D3KooWDZvsdFshnFeDJKxVrtWxFHpZP4VxTk1xJUxx6a4ZLDWF --name <YOUR_NODE> --telemetry-url 'wss://cube.room-house.com:8441/submit 0'
+	./target/release/pirl --bootnodes /ip4/38.242.141.1/tcp/30338/p2p/12D3KooWDZvsdFshnFeDJKxVrtWxFHpZP4VxTk1xJUxx6a4ZLDWF --name <YOUR_NODE>
 
 
 USE BINARY DISTRO
@@ -43,4 +45,4 @@ CHECK YOUR NODE'S TELEMETRY
 ===========================
 
 https://telemetry.polkadot.io/#list/0xfacdcefab28407f5b0e56899e1eefe27a5a7fda2a1c25f4e9a5a181eb108ee9e
-or just	https://skypirl.org
+
