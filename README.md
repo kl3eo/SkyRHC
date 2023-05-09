@@ -39,9 +39,9 @@ START NODE
 
 USE PRE-COMPILED VALIDATOR NODE BINARY
 ======================================
-
-Change to "export" folder, follow the README. This is a Sky node binary supposed to run on any reasonable Linux: Centos, Ubuntu, Debian, etc.
-The binary is built on Centos 8, with its glibc 2.28 included in the "export" folder.
+Clone https://github.com/kl3eo/sky_export
+Change to "sky_export" folder, follow the README. This is a Sky node binary supposed to run on any reasonable Linux: Centos, Ubuntu, Debian, etc.
+The binary is built on Centos 8, with its glibc 2.28 included in the "sky_export" folder.
 
 
 CHECK YOUR NODE'S TELEMETRY
