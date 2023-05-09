@@ -1,0 +1,9 @@
+This is a binary distro of SkyPirl.
+
+Supposing you home catalog is '/home/buddy', place this 'export' folder into it, and run 'export/start_low.sh' as user 'buddy' to start a node.
+
+Change the script 'export/start_low.sh' to add a custom node name.
+
+Check the telemetry to see your node shows there. (https://telemetry.polkadot.io/#list/0xfacdcefab28407f5b0e56899e1eefe27a5a7fda2a1c25f4e9a5a181eb108ee9e)
+
+
