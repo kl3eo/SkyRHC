@@ -37,10 +37,10 @@ START NODE
 	./target/release/pirl --bootnodes /ip4/38.242.141.1/tcp/30338/p2p/12D3KooWDZvsdFshnFeDJKxVrtWxFHpZP4VxTk1xJUxx6a4ZLDWF --name <YOUR_NODE>
 
 
-USE PRE-COMPILED BINARY
-=======================
+USE PRE-COMPILED VALIDATOR NODE BINARY
+======================================
 
-Download "export.tar.gz", untar it and follow the README. This is a self-contained archive with the binary and libs supposed to run on any reasonable Linux: Centos, Ubuntu, Debian, etc.
+Change to "export" folder, follow the README. This is a Sky node binary supposed to run on any reasonable Linux: Centos, Ubuntu, Debian, etc.
 The binary is built on Centos 8, with its glibc 2.28 included in the "export" folder.
 
 
