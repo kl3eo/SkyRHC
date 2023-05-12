@@ -20,9 +20,9 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom"
+        :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				Transfer 5 Pirl
+				{{ already ? 'Waiting ...' : 'Transfer 5 RHC' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -71,6 +71,7 @@ export default class Binder extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
+  private already = 0;
   private accountFrom: any = null;
   private accountTo: any = null;
 
@@ -141,7 +142,8 @@ export default class Binder extends Vue {
   public async shipIt(): Promise<void> {
       const { api } = Connector.getInstance();
       try {
-        showNotification('Dispatched.. wait result of TX');	
+        this.already = 1;
+	showNotification('Dispatched.. wait result of TX');
 	const pirl = 5000000000000; //5Pirl
 	
 	const alicePair = keyring.getPair(this.accountFrom.address);
@@ -211,15 +213,15 @@ export default class Binder extends Vue {
 			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
 			if (boo) this.sender2();
 						
-			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
-		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
+			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success); this.already = 0;
+		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger); this.already = 0;}
 
       	    } else if (status.isFinalized) {
 	    }
 	}); //api
 	
       } catch (e) {
-       showNotification(e.message, this.snackbarTypes.danger);
+       showNotification(e.message, this.snackbarTypes.danger); this.already = 0;
       }
   }
 

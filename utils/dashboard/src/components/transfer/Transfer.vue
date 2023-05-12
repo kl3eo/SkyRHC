@@ -24,9 +24,9 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom"
+        :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				Make Transfer
+				{{ already ? 'Waiting ...' : 'Make Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -75,6 +75,7 @@ export default class Transfer extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
+  private already = 0;  
   private accountFrom: any = null;
   private accountTo: any = null;
 
@@ -103,15 +104,16 @@ export default class Transfer extends Vue {
   public async shipIt(): Promise<void> {
     const { api } = Connector.getInstance();
       try {
+        this.already = 1;
         showNotification('Dispatched');
         console.log([this.accountTo.address, this.balance])
 	const pirl = this.balance/1000;
-        //const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, this.balance?.toString()]);
+        // const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, this.balance?.toString()]);
 	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, pirl?.toString()]);
-        showNotification(tx, this.snackbarTypes.success);
+        showNotification(tx, this.snackbarTypes.success); this.already = 0;
       } catch (e) {
         console.error('[ERR: TRANSFER SUBMIT]', e)
-        showNotification(e.message, this.snackbarTypes.danger);
+        showNotification(e.message, this.snackbarTypes.danger); this.already = 0;
       }
   }
 
