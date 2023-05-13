@@ -25,13 +25,6 @@
           ></b-menu-item>
         </b-menu-list>
       </b-menu>
-      <!-- b-button
-        class="toggle-button"
-        :icon-left="toggleIcon"
-        @click="toggleSidebar"
-        rounded
-      >
-      </b-button -->
     </div>
   </b-sidebar>
 </template>
