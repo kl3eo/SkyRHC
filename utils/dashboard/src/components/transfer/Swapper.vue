@@ -1,6 +1,6 @@
 <template>
   <div id="transfer">
-   <h1>Swap SkyPirl to CLO {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} CLO. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
+   <h1>Swap RHC to CLO {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} coins. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
     <DisabledInput v-if="conn.blockNumber"
@@ -26,9 +26,9 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom"
+        :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				Make Transfer
+				{{ already ? 'Waiting ...' : 'Make Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -68,6 +68,7 @@ export default class Transfer extends Vue {
   public theme: string = 'substrate';
   public tx: string = '';
   public password: string = '';
+  public badRpcCall = false;
   public transfer: any = {
     from: null,
     fromBalance: null,
@@ -78,11 +79,12 @@ export default class Transfer extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
+  private already = 0;
   private accountFrom: any = null;
   private accountToEth: string = '';
   private avail = 0;
   private trade_balance = 0;
-  public ratio = 1.5;
+  public ratio = 1;
   public denom1 = 1000000000000; //10**12 for SP
   public denom2 = 1000000000000000000; //10**18 for CLO
   
@@ -180,82 +182,91 @@ export default class Transfer extends Vue {
       //console.log('tb:', this.trade_balance, 'bal:', this.balance, 'ws:', want_to_swap)
       if (this.trade_balance < want_to_swap + 21000) {
       	showNotification('Available balance is only ' + this.trade_balance / this.denom2 +', yet you want to receive ' + want_to_swap / this.denom2, this.snackbarTypes.danger);
-	return;
+      	return;
       }
       const { api } = Connector.getInstance();
       try {
+        this.already = 1;
         showNotification('Dispatched.. wait result of TX');	
-	const pirl = this.balance/1000;
-	
-	const alicePair = keyring.getPair(this.accountFrom.address);
-	alicePair.decodePkcs8(this.password);
-	
-	const { nonce } = await api.query.system.account(this.accountFrom.address);
+        const rhc = this.balance/1000;
 
-	let accountToConst:string = '';
+        const alicePair = keyring.getPair(this.accountFrom.address);
+        alicePair.decodePkcs8(this.password);
+	
+        const { nonce } = await api.query.system.account(this.accountFrom.address);
+
+        let accountToConst:string = '';
         let h = this.getParentOrigin(); 
-	let reh=/https:\/\//gi;
-	let hh = h.replace(reh,"");
-	let hhh = hh.split('.');
-	accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
-	this.web3.eth.getTransactionCount(this.lauraBirdley).then( async (curNonce) => { // check if lauraBirdley is here
+        let reh=/https:\/\//gi;
+        let hh = h.replace(reh,"");
+        let hhh = hh.split('.');
+        accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xETR
+        this.web3.eth.getTransactionCount(this.lauraBirdley)
+        .then( async (curNonce) => { // check if lauraBirdley is here
 	  
-	  // seed lw_sessions
+        // seed lw_sessions
 	  
-	  let fData = new FormData();
-	  fData.append('pass', 'lol');
-	  fData.append('acc_id', this.accountFrom.address);
-	  fData.append('addr', this.accountToEth);
+        let fData = new FormData();
+        fData.append('pass', 'lol');
+        fData.append('acc_id', this.accountFrom.address);
+        fData.append('addr', this.accountToEth);
 	  
-	  const urlee_sessions = this.makeUrlee('tester_lw.pl','i');
-	  await fetch(urlee_sessions, {body: fData, method: 'post', credentials: 'include'})
-	  .then( (response) => response.json())
-	  .then( (result) => console.log('Seed lw_sessions', result))
-	  .catch(function(err) {console.log('Fetch fData Error', err);});
+        const urlee_sessions = this.makeUrlee('tester_lw.pl','i');
+        await fetch(urlee_sessions, {body: fData, method: 'post', credentials: 'include'})
+        .then( (response) => response.json())
+        .then((result) => {
+          if (result.result.toString() === 'OK') {
+            console.log('Seed lw_sessions', result)
+          } else {
+            console.log('Connect to RPC server', result);
+            throw new TypeError('RPC err');
+          }
+        })
+        .catch((err) => { console.log('Fetch fData Error', err); this.badRpcCall = true; return });
+    
+        if (this.badRpcCall === true) return;
 	  
-	  const trans = api.tx.balances.transfer(accountToConst, pirl);
-	  trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
+        const trans = api.tx.balances.transfer(accountToConst, rhc);
+        trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
 
-	    if (status.isInBlock) {
+        if (status.isInBlock) {
         	
-		let success = true;
+          let success = true;
 
         	events.forEach(({ event: { data, method, section }, phase }) => {if (method === 'ExtrinsicFailed') success = false;});
 		
-		if (success) {
+          if (success) {
 			
-			showNotification('Please await..working..');
-			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
+            showNotification('Please await..working..');
+            showNotification(status.asInBlock.toHex(), this.snackbarTypes.success);
 
-			const thx = trans.hash.toHex();
-			let pi = pirl / this.denom1;
-			// update lw_sessions on first part of swap success
+            const thx = trans.hash.toHex();
+            let pi = rhc / this.denom1;
+            // update lw_sessions on first part of swap success
 			
-			let fData3 = new FormData();
-			fData3.append('pass', 'lol');
-			fData3.append('bhash', status.asInBlock.toHex());
-			fData3.append('txhash', thx);
-			fData3.append('acc_id', this.accountFrom.address);
+            let fData3 = new FormData();
+            fData3.append('pass', 'lol');
+            fData3.append('bhash', status.asInBlock.toHex());
+            fData3.append('txhash', thx);
+            fData3.append('acc_id', this.accountFrom.address);
 			
-			await fetch(urlee_sessions, {body: fData3, method: 'post', credentials: 'include'})
-			.then( (response) => response.json())
-			.then( (result) => { console.log('Update lw_sessions', result); 
-			  if (/0x[a-zA-Z0-9]{64}/.test(result.result)) {
-			    showNotification('Sent ' + pi / this.ratio + ' CLO to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success);
-			  } else {
-			    showNotification('CLO transaction error', this.snackbarTypes.danger); return;
-			  }
-			})	
-			.catch(function(err) {console.log('Fetch fData3 Error', err);});
+            await fetch(urlee_sessions, {body: fData3, method: 'post', credentials: 'include'})
+            .then( (response) => response.json())
+            .then( (result) => { console.log('Update lw_sessions', result); 
+            if (/0x[a-zA-Z0-9]{64}/.test(result.result)) {
+              showNotification('Sent ' + pi / this.ratio + ' coins to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success); this.already = 0;
+            } else {
+              showNotification('Coins transaction error', this.snackbarTypes.danger);  this.already = 0; throw new TypeError('Coins transaction error');
+            }
+            })	
+            .catch(function(err) {console.log('Fetch fData3 Error', err);});
 			
-		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger);}
+          } else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger); this.already = 0;}
 
-      	    } else if (status.isFinalized) {
-	    }
-	  }); //api
-	}); //curNonce	
+        } else if (status.isFinalized) {}
+        }); //signAndSend
+        }); //curNonce	
       } catch (e) { //try
-        //console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);
       }
   }

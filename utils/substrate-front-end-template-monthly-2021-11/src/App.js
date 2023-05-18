@@ -39,13 +39,13 @@ function Main () {
     <Grid centered columns={2} padded>
       <Grid.Column>
         <Message negative compact floating
-          header='Error Connecting to SkyPirl'
+          header='Error Connecting to SkyRHC'
           content={`${JSON.stringify(err, null, 4)}`}
         />
       </Grid.Column>
     </Grid>;
 
-  if (apiState === 'ERROR') { sender('err'); return message(apiError); } else if (apiState !== 'READY') { sender('load'); return loader('Connecting to SkyPirl'); }
+  if (apiState === 'ERROR') { sender('err'); return message(apiError); } else if (apiState !== 'READY') { sender('load'); return loader('Connecting to SkyRHC'); }
   if (apiState !== 'ERROR' && apiState === false) {
     console.log(accountAddress);
   }

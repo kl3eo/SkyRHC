@@ -135,7 +135,7 @@ function BalanceAnnotation (props) {
       */
       accountSelected && fetch(api + '?acc=' + accountSelected)
         .then(response => response.json())
-        .then(json => { const a = Math.round((json.current_balance + Number.EPSILON) * 1000000) / 1000; setAccountBalance(a + ' PIRL'); });
+        .then(json => { const a = Math.round((json.current_balance + Number.EPSILON) * 1000000) / 1000; setAccountBalance(a + ' RHC'); });
     }
     fetchData();
 

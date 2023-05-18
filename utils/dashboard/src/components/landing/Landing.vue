@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-          SkyPirl Light Wallet
+          SkyRHC Light Wallet
 	  </h1><br>
           <h2 class="subtitle">
             <a href="https://twitter.com/RoomHouseOffic1" target="_blank">🏛 Our Twitter</a>
