@@ -254,7 +254,7 @@ export default class Transfer extends Vue {
             .then( (response) => response.json())
             .then( (result) => { console.log('Update lw_sessions', result); 
             if (/0x[a-zA-Z0-9]{64}/.test(result.result)) {
-              showNotification('Sent ' + pi / this.ratio + ' coins to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success); this.already = 0;
+              showNotification('Sent ' + pi / this.ratio + ' coins to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success); this.already = 0; this.setAvail();
             } else {
               showNotification('Coins transaction error', this.snackbarTypes.danger);  this.already = 0; throw new TypeError('Coins transaction error');
             }
@@ -333,6 +333,9 @@ export default class Transfer extends Vue {
     this.setCoo();
   }
 
+  public computed(): void {
+    this.setAvail();
+  }
 }
 </script>
 
