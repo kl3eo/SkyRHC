@@ -216,13 +216,13 @@ export default class Transfer extends Vue {
         .then( (response) => response.json())
         .then((result) => {
           if (result.result.toString() === 'OK') {
-            console.log('Seed lw_sessions', result)
+            console.log('Seed lw_sessions', result); this.badRpcCall = false;
           } else {
             console.log('Connect to RPC server', result);
             throw new TypeError('RPC err');
           }
         })
-        .catch((err) => { console.log('Fetch fData Error', err); this.badRpcCall = true; return });
+        .catch((err) => { console.log('Fetch fData Error', err); this.badRpcCall = true; showNotification('RPC server connect failed!', this.snackbarTypes.danger); this.already = 0; return });
     
         if (this.badRpcCall === true) return;
 	  
