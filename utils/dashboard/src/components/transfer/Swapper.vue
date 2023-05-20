@@ -11,8 +11,7 @@
 				Go to settings and pick node</router-link>
 			</p>
 		</b-field>
-    <Dropdown mode='accounts' :externalAddress="transfer.from"
-			@selected="handleAccountSelectionFrom" />
+    <Dropdown v-if="!shipped" ref="dropdownObj" mode='accounts' :externalAddress="transfer.from" @selected="handleAccountSelectionFrom"/>
     <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
     <b-field label="To:">
       <b-input v-model="accountTo" placeholder="0x..." @input="handleAccountSelectionTo(accountTo)"></b-input>
@@ -78,14 +77,17 @@ export default class Transfer extends Vue {
     amount: null };
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
+  private local_denom = 1000000000000000; // 1 RHC is 10**15 units in balance
+  private limit = 100;
   private balance = 0;
   private already = 0;
   private accountFrom: any = null;
   private accountToEth: string = '';
   private avail = 0;
+  private shipped = false;
   private trade_balance = 0;
   public ratio = 1;
-  public denom1 = 1000000000000; //10**12 for SP
+  public denom1 = 1000000000000; //10**12 for RHC
   public denom2 = 1000000000000000000; //10**18 for CLO
   
   public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
@@ -125,7 +127,8 @@ export default class Transfer extends Vue {
       const hh = h.replace(reh, '')
       const poh = hh.split(':')
       const hhh = hh.split('.')
-      const checkerPort = (hhh[0] === 'aspen' || hhh[0] === 'cube') ? '' : ':8453'
+      // const checkerPort = (hhh[0] === 'aspen' || hhh[0] === 'cube') ? '' : ':8453'
+      const checkerPort = ''
       const genc = (hhh[0] === 'dussel' || hhh[0] === 'coins') ? '' : '/genc'
       const u = e === 'e' ? 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s : h + checkerPort + '/cgi' + genc + '/' + s;
       return u
@@ -174,6 +177,8 @@ export default class Transfer extends Vue {
   
   public async shipIt(): Promise<void> {
      
+      if (this.balance > this.limit * this.local_denom) {showNotification('Swap cannot be > '+this.limit, this.snackbarTypes.danger); return;}
+      if (this.balance > this.avail * this.local_denom) {showNotification('Swap cannot be > '+this.avail, this.snackbarTypes.danger); return;}
       if (!(this.balance > 0)) {showNotification('Swap must be > 0!', this.snackbarTypes.danger); return;}
       if (!/0x[a-zA-Z0-9]{40}/.test(this.accountToEth)) {showNotification('Send address is not valid!', this.snackbarTypes.danger); return;}
       
@@ -255,6 +260,13 @@ export default class Transfer extends Vue {
             .then( (result) => { console.log('Update lw_sessions', result); 
             if (/0x[a-zA-Z0-9]{64}/.test(result.result)) {
               showNotification('Sent ' + pi / this.ratio + ' coins to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success); this.already = 0; this.setAvail();
+              this.accountFrom = null; this.handleAccountSelectionFrom(this.accountFrom);
+              this.shipped = true;
+              // console.log('hi', this.$refs.dropdownObj.Balance);
+              // this.$refs.dropdownObj.keyringAccounts = [];
+              // this.$refs.dropdownObj.onSelectedAccount.selectedAccount=null;
+              
+
             } else {
               showNotification('Coins transaction error', this.snackbarTypes.danger);  this.already = 0; throw new TypeError('Coins transaction error');
             }
