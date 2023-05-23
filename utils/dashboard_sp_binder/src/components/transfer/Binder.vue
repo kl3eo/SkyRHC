@@ -22,7 +22,7 @@
         outlined
         :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				{{ already ? 'Waiting ...' : 'Transfer 5 RHC' }}
+				{{ already ? 'Waiting ...' : 'Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -72,6 +72,7 @@ export default class Binder extends Vue {
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
   private already = 0;
+  private rhc = 0;
   private accountFrom: any = null;
   private accountTo: any = null;
 
@@ -144,7 +145,8 @@ export default class Binder extends Vue {
       try {
         this.already = 1;
 	showNotification('Dispatched.. wait result of TX');
-	const pirl = 5000000000000; //5Pirl
+	const rhc1 = 5000000000000; //5RHC
+	const rhc2 = 50000000000000; //50RHC
 	
 	const alicePair = keyring.getPair(this.accountFrom.address);
 	alicePair.decodePkcs8(this.password);
@@ -179,13 +181,16 @@ export default class Binder extends Vue {
 			break;
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 	}
+	
+	this.rhc = getVars.length === 16 ? rhc1 : rhc2;
+	
 	const urlee = this.makeUrlee('tester.pl');
 	let fData = new FormData();
 	fData.append('sess', getVars);
 	fData.append('pass', 'lol');
 	fData.append('acc_id', this.accountFrom.address);
 	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
-	const trans = api.tx.balances.transfer(accountToConst, pirl);
+	const trans = api.tx.balances.transfer(accountToConst, this.rhc);
 	trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
 
 	    if (status.isInBlock) {
@@ -209,8 +214,8 @@ export default class Binder extends Vue {
                 	function(response) {		
 			}).catch(function(err) {console.log('Fetch Error', err);});
 			
-			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house')
-			if (!boo) this.sender1(this.accountFrom, accountToConst, pirl?.toString());
+			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine' || hhh[0] === 'slotjs') && hhh[1] === 'room-house')
+			if (!boo) this.sender1(this.accountFrom, accountToConst, this.rhc?.toString());
 			if (boo) this.sender2();
 						
 			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success); this.already = 0;
