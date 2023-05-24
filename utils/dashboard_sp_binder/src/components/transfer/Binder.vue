@@ -22,7 +22,7 @@
         outlined
         :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				{{ already ? 'Waiting ...' : 'Transfer' }}
+				{{ already ? 'Waiting ...' : 'Transfer ' + getPrice() + ' RHC' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -73,6 +73,7 @@ export default class Binder extends Vue {
   private balance = 0;
   private already = 0;
   private rhc = 0;
+  private sess: string = '';
   private accountFrom: any = null;
   private accountTo: any = null;
 
@@ -139,7 +140,28 @@ export default class Binder extends Vue {
 
     return "";
   }
-  
+
+  getSession() {
+    let sess = '';
+    let uri = window.location.href.split('?');
+    if(uri.length == 2) {
+	let vars = uri[1].split('#');
+	vars.forEach(function(v) {
+	let tmp = v.split('=');
+	if(tmp.length == 2)
+		sess = tmp[1];
+	});
+    }
+    return sess;
+  }
+
+  getPrice() {
+    let price = 0;
+    let sess = this.getSession();
+    price = sess.length === 16 ? 5 : sess.length === 24 ? 50 : price;
+    return price;
+  }
+      
   public async shipIt(): Promise<void> {
       const { api } = Connector.getInstance();
       try {
@@ -152,18 +174,8 @@ export default class Binder extends Vue {
 	alicePair.decodePkcs8(this.password);
 	
 	const { nonce } = await api.query.system.account(this.accountFrom.address);
-        
-	let getVars:string = '';
-        let uri = window.location.href.split('?');
-        if(uri.length == 2) {
-          let vars = uri[1].split('#');
-          vars.forEach(function(v) {
-            let tmp = v.split('=');
-            if(tmp.length == 2)
-              getVars = tmp[1];
-          });
-        }
 
+	let sess = this.getSession();
 	let accountToConst:string = '';
         let h = this.getParentOrigin(); 
 	let reh=/https:\/\//gi; let hh = h.replace(reh,"");
@@ -182,11 +194,11 @@ export default class Binder extends Vue {
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 	}
 	
-	this.rhc = getVars.length === 16 ? rhc1 : rhc2;
+	this.rhc = sess.length === 16 ? rhc1 : rhc2;
 	
 	const urlee = this.makeUrlee('tester.pl');
 	let fData = new FormData();
-	fData.append('sess', getVars);
+	fData.append('sess', sess);
 	fData.append('pass', 'lol');
 	fData.append('acc_id', this.accountFrom.address);
 	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
@@ -204,7 +216,7 @@ export default class Binder extends Vue {
 			const thx = trans.hash.toHex();
 			
 			let formData = new FormData();
-			formData.append('sess', getVars);
+			formData.append('sess', sess);
 			formData.append('pass', 'lol');
 			formData.append('bhash', status.asInBlock.toHex());
 			formData.append('txhash', thx);
