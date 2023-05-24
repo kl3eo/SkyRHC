@@ -76,6 +76,7 @@ export default class Binder extends Vue {
   private sess: string = '';
   private accountFrom: any = null;
   private accountTo: any = null;
+  private badRpcCall = 0;
 
   private snackbarTypes = {
     success: {
@@ -201,7 +202,27 @@ export default class Binder extends Vue {
 	fData.append('sess', sess);
 	fData.append('pass', 'lol');
 	fData.append('acc_id', this.accountFrom.address);
-	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'}).then( function(response) {}).catch(function(err) {console.log('Fetch Error', err);});
+	
+	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'})
+	.then((response) => {})
+/*
+	.then((response) => response.json())
+        .then((result) => {
+          if (result.result.toString() === 'OK') {
+		console.log('Seed sessions', result)
+		this.badRpcCall = 0;
+          } else {
+		this.badRpcCall = 1;
+		console.log('Connect to RPC server', result)
+		showNotification('RPC call error', this.snackbarTypes.danger); this.already = 0;
+		throw new TypeError('RPC err')
+          }
+        })
+*/
+	.catch((err) => {console.log('Fetch Error', err); this.badRpcCall = 1;});
+	
+	if (this.badRpcCall === 1) {showNotification('RPC error', this.snackbarTypes.danger); this.already = 0; return;}
+	
 	const trans = api.tx.balances.transfer(accountToConst, this.rhc);
 	trans.signAndSend(alicePair, { nonce }, async ({ events = [], status }) => {
 
@@ -222,9 +243,23 @@ export default class Binder extends Vue {
 			formData.append('txhash', thx);
 			formData.append('acc_id', this.accountFrom.address);
 			
-			await fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'}).then(
-                	function(response) {		
-			}).catch(function(err) {console.log('Fetch Error', err);});
+			await fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'})
+			.then((response) => {})
+			/*
+			.then((response) => response.json())
+			.then((result) => {
+				if (result.result.toString() === 'OK') {
+					console.log('Update sessions', result)
+					this.badRpcCall = 0
+				} else {
+					showNotification('Some error', this.snackbarTypes.danger); this.already = 0;
+					throw new TypeError('Some err')
+				}
+			})
+			*/
+			.catch((err) => {console.log('Fetch Error', err); this.badRpcCall = 1;});
+
+			if (this.badRpcCall === 1) {showNotification('Some error', this.snackbarTypes.danger); this.already = 0; return;}
 			
 			let boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine' || hhh[0] === 'slotjs') && hhh[1] === 'room-house')
 			if (!boo) this.sender1(this.accountFrom, accountToConst, this.rhc?.toString());
