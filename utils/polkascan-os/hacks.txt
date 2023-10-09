@@ -18,3 +18,5 @@ update harvester_status set value=null
  
 2. if errors on "default" value on startup: replace 
 /opt/nvme2/docker/overlay2/(.....)/diff/usr/local/lib/python3.6/site-packages/scalecodec/type_registry/ with this "type_registry/"
+
+3.NB: on Enum 231 error, AFTER NEW RUNTIME change specs num in ./harvester/app/type_registry/skypirl.json

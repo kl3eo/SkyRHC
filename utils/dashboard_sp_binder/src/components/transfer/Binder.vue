@@ -20,7 +20,7 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom || already == 1"
+        :disabled="!accountFrom || already == 1 || !getPrice()"
         @click="shipIt">
 				{{ already ? 'Waiting ...' : 'Transfer ' + getPrice() + ' RHC' }}
       </b-button>
@@ -191,6 +191,8 @@ export default class Binder extends Vue {
 		case 'room-house' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 			break;
 		case 'slotmachine' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+			break;
+		case 'slotjs' : accountToConst = '5GmdHWhPr6nBJDvFXpMcHm7QBLQcgnAjU3YzupbxzLs9z4xa'; //elbrus
 			break;
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 	}

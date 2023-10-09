@@ -52,6 +52,11 @@ app.conf.beat_schedule = {
         'schedule': 10.0,
         'args': ()
     },
+    'check-head-60-minutes': {
+        'task': 'app.tasks.rebuild_account_info_snapshot',
+        'schedule': 3600.0,
+        'args': ()
+    },
 }
 
 app.conf.timezone = 'UTC'

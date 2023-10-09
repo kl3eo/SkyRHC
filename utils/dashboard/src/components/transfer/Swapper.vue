@@ -1,6 +1,6 @@
 <template>
   <div id="transfer">
-   <h1>Swap RHC to CLO {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} coins. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
+   <h1>Swap RHC to EXP {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} coins. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
     <DisabledInput v-if="conn.blockNumber"
@@ -78,7 +78,7 @@ export default class Transfer extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private local_denom = 1000000000000000; // 1 RHC is 10**15 units in balance
-  private limit = 100;
+  private limit = 1;
   private balance = 0;
   private already = 0;
   private accountFrom: any = null;
@@ -88,10 +88,11 @@ export default class Transfer extends Vue {
   private trade_balance = 0;
   public ratio = 1;
   public denom1 = 1000000000000; //10**12 for RHC
-  public denom2 = 1000000000000000000; //10**18 for CLO
+  public denom2 = 1000000000000000000; //10**18 for CLO and EXP
   
-  public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
+  // public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
   // private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
+  public web3 = new Web3(new Web3.providers.HttpProvider('https://node.expanse.tech'))
   private lauraBirdley = '0xd3f3f015873f9cd8d6698b688b109bcd33222037';
 
   private snackbarTypes = {
