@@ -25,9 +25,9 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom || already == 1"
+        :disabled="!accountFrom || already == 1 || already == -1"
         @click="shipIt">
-				{{ already ? 'Waiting ...' : 'Make Transfer' }}
+				{{ already > 0 ? 'Waiting ...' : 'Make Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -105,14 +105,14 @@ export default class Transfer extends Vue {
 
 
   public async shipIt(): Promise<void> {
+    this.already = 1;
     const { api } = Connector.getInstance();
       try {
-        this.already = 1;
         showNotification('Dispatched');
         console.log([this.transfer_to, this.balance])
 	const pirl = this.balance/1000;
  	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.transfer_to, pirl?.toString()]);
-        showNotification(tx, this.snackbarTypes.success); this.already = 0;
+        showNotification(tx, this.snackbarTypes.success); this.already = -1;
       } catch (e) {
         console.error('[ERR: TRANSFER SUBMIT]', e)
         showNotification(e.message, this.snackbarTypes.danger);this.already = 0;
