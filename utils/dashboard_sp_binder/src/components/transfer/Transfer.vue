@@ -12,10 +12,11 @@
 		</b-field>
     <Dropdown mode='accounts' :externalAddress="transfer.from"
 			@selected="handleAccountSelectionFrom" />
-		<Dropdown :externalAddress="transfer.to"
+		<Dropdown :externalAddress="transfer.to" v-if="!transfer.to"
 			@selected="handleAccountSelectionTo" />
+		<DisabledInput v-if="transfer.to" label="To" :value="transfer_to" />
     <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
-    <b-field label="password 🤫 magic spell" class="password-wrapper">
+    <b-field label="password" class="password-wrapper">
       <b-input v-model="password" type="password" password-reveal>
       </b-input>
     </b-field>
@@ -24,9 +25,9 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom"
+        :disabled="!accountFrom || already == 1"
         @click="shipIt">
-				Make Transfer
+				{{ already ? 'Waiting ...' : 'Make Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -75,8 +76,10 @@ export default class Transfer extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private balance = 0;
+  private already = 0;
   private accountFrom: any = null;
   private accountTo: any = null;
+  public transfer_to: string = '';
 
   private snackbarTypes = {
     success: {
@@ -101,19 +104,18 @@ export default class Transfer extends Vue {
   }
 
 
-
   public async shipIt(): Promise<void> {
     const { api } = Connector.getInstance();
       try {
+        this.already = 1;
         showNotification('Dispatched');
-        console.log([this.accountTo.address, this.balance])
+        console.log([this.transfer_to, this.balance])
 	const pirl = this.balance/1000;
-        // const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, this.balance?.toString()]);
-	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.accountTo.address, pirl?.toString()]);
-        showNotification(tx, this.snackbarTypes.success);
+ 	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.transfer_to, pirl?.toString()]);
+        showNotification(tx, this.snackbarTypes.success); this.already = 0;
       } catch (e) {
         console.error('[ERR: TRANSFER SUBMIT]', e)
-        showNotification(e.message, this.snackbarTypes.danger);
+        showNotification(e.message, this.snackbarTypes.danger);this.already = 0;
       }
   }
 
@@ -147,6 +149,7 @@ export default class Transfer extends Vue {
 
   public handleAccountSelectionTo(account: KeyringPair) {
     this.accountTo = account;
+    this.transfer_to = this.accountTo.address;
   }
 
   public handleValue(value: any) {
@@ -160,7 +163,9 @@ export default class Transfer extends Vue {
       this.transfer.from = this.$route.params.from;
     }
     if (this.$route.params.to) {
-      this.transfer.to = this.$route.params.to;
+      let a = this.$route.params.to.split(':'); 
+      this.transfer_to = a[1];
+      this.transfer.to = this.transfer_to;
     }
   }
 

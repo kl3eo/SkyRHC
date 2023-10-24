@@ -6,13 +6,18 @@ export const apiEnabled = (to: any, from: any, next: any) => {
   if (Connector.getInstance().api) {
     next();
   } else {
-    next({ name: 'landing' })
-    Notification.open({
-      duration: 7000,
-      message: `Please wait.. loading<br>api takes time`,
-      queue: false,
-      type: 'is-danger',
-      position: 'is-top-right',
-    });
+	Notification.open({duration: 2000,message: `Please wait.. loading`,queue: false,type: 'is-info',position: 'is-top-right',});
+	setTimeout(() => {if (Connector.getInstance().api) {
+		next();
+	} else {
+		Notification.open({duration: 2000,message: `Please wait.. loading`,queue: false,type: 'is-info',position: 'is-top-right',});
+		setTimeout(() => {if (Connector.getInstance().api) {
+				next();
+			} else {
+				next({ name: 'landing' })
+				Notification.open({duration: 3000,message: `Please wait.. loading<br>api takes time`,queue: false,type: 'is-danger',position: 'is-top-right',});
+                	}
+                },2000);
+        }}, 2000);
   }
 };
