@@ -58,6 +58,11 @@ import { showNotification } from '@/utils/notification';
   },
 })
 export default class Binder extends Vue {
+
+  public rhc1 = 1000000000000; //1RHC
+  public rhc5 = 5000000000000; //5RHC
+  public rhc50 = 50000000000000; //50RHC
+	
   public theme: string = 'substrate';
   public tx: string = '';
   public password: string = '';
@@ -77,7 +82,9 @@ export default class Binder extends Vue {
   private accountFrom: any = null;
   private accountTo: any = null;
   private badRpcCall = 0;
-
+  public transfer_to: string = '';
+  public transfer_a: string = '';
+  
   private snackbarTypes = {
     success: {
       type: 'is-success',
@@ -160,6 +167,7 @@ export default class Binder extends Vue {
     let price = 0;
     let sess = this.getSession();
     price = sess.length === 16 ? 5 : sess.length === 24 ? 50 : price;
+    if (this.transfer_a != '') price = parseFloat(this.transfer_a);
     return price;
   }
       
@@ -168,8 +176,6 @@ export default class Binder extends Vue {
       try {
         this.already = 1;
 	showNotification('Dispatched.. wait result of TX');
-	const rhc1 = 5000000000000; //5RHC
-	const rhc2 = 50000000000000; //50RHC
 	
 	const alicePair = keyring.getPair(this.accountFrom.address);
 	alicePair.decodePkcs8(this.password);
@@ -196,8 +202,9 @@ export default class Binder extends Vue {
 			break;
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 	}
-	
-	this.rhc = sess.length === 16 ? rhc1 : rhc2;
+
+	this.rhc = this.transfer.amount ? this.transfer.amount : sess.length === 16 ? this.rhc5 : this.rhc50;
+	accountToConst = this.transfer_to == '' ? accountToConst : this.transfer_to;
 	
 	const urlee = this.makeUrlee('tester.pl');
 	let fData = new FormData();
@@ -332,7 +339,16 @@ export default class Binder extends Vue {
       this.transfer.from = this.$route.params.from;
     }
     if (this.$route.params.to) {
-      this.transfer.to = this.$route.params.to;
+      let a = this.$route.params.to.split(':'); 
+      this.transfer_to = a[1];
+      this.transfer.to = this.transfer_to;
+    }
+    if (this.$route.params.amount) {
+console.log('amount', this.$route.params.amount)
+      let b = this.$route.params.amount.split(':'); 
+      this.transfer_a = b[1];
+      this.transfer.amount = parseFloat(this.transfer_a) * 1000000000000;
+console.log('amount',this.transfer.amount, 'transfer_a', this.transfer_a);
     }
   }
 

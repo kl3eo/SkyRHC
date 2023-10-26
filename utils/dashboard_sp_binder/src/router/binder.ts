@@ -9,4 +9,10 @@ export default [
         component: Binder,
         beforeEnter: apiEnabled,
       },
+      {
+        path: '/binder/to/:to/amount/:amount',
+        name: 'binderToA',
+        component: Binder,
+        beforeEnter: apiEnabled,
+      },
       ]

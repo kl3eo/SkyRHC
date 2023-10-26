@@ -27,4 +27,10 @@ export default [
         component: Transfer,
         beforeEnter: apiEnabled,
       },
+      {
+        path: '/transfer/to/:to/amount/:amount',
+        name: 'transferToA',
+        component: Transfer,
+        beforeEnter: apiEnabled,
+      },
       ]

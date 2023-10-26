@@ -15,7 +15,7 @@
 		<Dropdown :externalAddress="transfer.to" v-if="!transfer.to"
 			@selected="handleAccountSelectionTo" />
 		<DisabledInput v-if="transfer.to" label="To" :value="transfer_to" />
-    <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
+    <Balance v-if="!transfer.amount" :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
     <b-field label="password" class="password-wrapper">
       <b-input v-model="password" type="password" password-reveal>
       </b-input>
@@ -27,7 +27,7 @@
         outlined
         :disabled="!accountFrom || already == 1 || already == -1"
         @click="shipIt">
-				{{ already > 0 ? 'Waiting ...' : 'Make Transfer' }}
+				{{ already > 0 ? 'Waiting ...' : transfer_a != '' ? 'Transfer '+transfer_a+' RHC' : 'Make Transfer' }}
       </b-button>
       <b-button v-if="tx" tag="a" target="_blank" :href="getExplorerUrl(tx)" 
         icon-left="external-link-alt">
@@ -80,6 +80,7 @@ export default class Transfer extends Vue {
   private accountFrom: any = null;
   private accountTo: any = null;
   public transfer_to: string = '';
+  public transfer_a: string = '';
 
   private snackbarTypes = {
     success: {
@@ -110,7 +111,8 @@ export default class Transfer extends Vue {
       try {
         showNotification('Dispatched');
         console.log([this.transfer_to, this.balance])
-	const pirl = this.balance/1000;
+	const pirl = this.transfer.amount ? this.transfer.amount : this.balance/1000;
+	
  	const tx = await exec(this.accountFrom.address, this.password, api.tx.balances.transfer, [this.transfer_to, pirl?.toString()]);
         showNotification(tx, this.snackbarTypes.success); this.already = -1;
       } catch (e) {
@@ -166,6 +168,13 @@ export default class Transfer extends Vue {
       let a = this.$route.params.to.split(':'); 
       this.transfer_to = a[1];
       this.transfer.to = this.transfer_to;
+    }
+    if (this.$route.params.amount) {
+// console.log('amount', this.$route.params.amount)
+      let b = this.$route.params.amount.split(':'); 
+      this.transfer_a = b[1];
+      this.transfer.amount = parseFloat(this.transfer_a) * 1000000000000;
+// console.log('amount',this.transfer.amount, 'transfer_a', this.transfer_a);
     }
   }
 
