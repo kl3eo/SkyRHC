@@ -16,7 +16,7 @@ export default [
     path: '/accounts/0',
 
     component: Accounts,
-    // beforeEnter: apiEnabled,
+    beforeEnter: apiEnabled,
     children: [
       {
         path: '',
