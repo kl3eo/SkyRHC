@@ -65,6 +65,7 @@ export default new Vuex.Store({
     loading: false,
     keyringLoaded: false,
     chainProperties: {},
+    callOptions: {},
     explorer: {},
     explorerOptions: {},
     development: {},
@@ -76,6 +77,9 @@ export default new Vuex.Store({
     },
     setChainProperties(state: any, data) {
       state.chainProperties = Object.assign({}, data)
+    },
+    setCallOptions(state: any, data) {
+      state.callOptions = Object.assign({}, data)
     },
     setDevelopment(state: any, data) {
       state.development = Object.assign(state.development, data)

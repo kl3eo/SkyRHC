@@ -20,7 +20,7 @@
         type="is-primary"
         icon-left="paper-plane"
         outlined
-        :disabled="!accountFrom || already == 1 || !getPrice()"
+        :disabled="!accountFrom || already == 1 || already == -1 || !getPrice()"
         @click="shipIt">
 				{{ already ? 'Waiting ...' : 'Transfer ' + getPrice() + ' RHC' }}
       </b-button>
@@ -160,6 +160,9 @@ export default class Binder extends Vue {
 		sess = tmp[1];
 	});
     }
+//console.log('getSession, sess is', sess, 'saved sess is', this.$store.state.callOptions.session );
+
+    if (sess.length == 0 && this.$store.state.callOptions.session) sess = this.$store.state.callOptions.session.length ? this.$store.state.callOptions.session : '';
     return sess;
   }
 
@@ -274,7 +277,7 @@ export default class Binder extends Vue {
 			if (!boo) this.sender1(this.accountFrom, accountToConst, this.rhc?.toString());
 			if (boo) this.sender2();
 						
-			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success); this.already = 0;
+			showNotification(status.asInBlock.toHex(), this.snackbarTypes.success); this.already = -1;
 		} else { showNotification('Trasaction error: low balance?', this.snackbarTypes.danger); this.already = 0;}
 
       	    } else if (status.isFinalized) {
@@ -342,14 +345,26 @@ export default class Binder extends Vue {
       let a = this.$route.params.to.split(':'); 
       this.transfer_to = a[1];
       this.transfer.to = this.transfer_to;
+    } else {
+      this.transfer_to = this.$store.state.callOptions.to.length ? this.$store.state.callOptions.to : '';
+      this.transfer.to = this.transfer_to;
     }
+    
     if (this.$route.params.amount) {
-console.log('amount', this.$route.params.amount)
       let b = this.$route.params.amount.split(':'); 
       this.transfer_a = b[1];
-      this.transfer.amount = parseFloat(this.transfer_a) * 1000000000000;
-console.log('amount',this.transfer.amount, 'transfer_a', this.transfer_a);
+      this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000: 0;
+    } else {
+      this.transfer_a = this.$store.state.callOptions.amount.length ? this.$store.state.callOptions.amount : '';
+      this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000 : 0;
     }
+    
+    if (this.$route.params.to && this.$route.params.amount) {
+      this.$store.commit('setCallOptions',{amount: this.transfer_a, to: this.transfer_to, session: this.getSession()})
+    } else {
+      this.$store.commit('setCallOptions',{amount: '', to: '', session: this.getSession()})
+    }
+
   }
 
   public mounted(): void {
