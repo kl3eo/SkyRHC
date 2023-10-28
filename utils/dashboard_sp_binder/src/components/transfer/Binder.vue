@@ -191,9 +191,9 @@ export default class Binder extends Vue {
 	let reh=/https:\/\//gi; let hh = h.replace(reh,"");
 	let hhh = hh.split('.');
 	switch(hhh[0]) { 	
-		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx';
+		case 'club' : accountToConst = '5ENzTTUL3zvnMP8usRo3ZcGmMhkaHsvFUP6PMedLV9EWtLFx'; //sorba
 			break; 
-		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT';
+		case 'milan' : accountToConst = '5Dz8Ew8bsrd9BHCygQSBdqnBwiKGUMk86HVmrQhpXpUSDXKT'; //milan
 			break; 	
 		case 'www' : accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
 			break; 
@@ -203,7 +203,7 @@ export default class Binder extends Vue {
 			break;
 		case 'slotjs' : accountToConst = '5GmdHWhPr6nBJDvFXpMcHm7QBLQcgnAjU3YzupbxzLs9z4xa'; //elbrus
 			break;
-		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86';
+		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xetr
 	}
 
 	this.rhc = this.transfer.amount ? this.transfer.amount : sess.length === 16 ? this.rhc5 : this.rhc50;
@@ -217,20 +217,6 @@ export default class Binder extends Vue {
 	
 	await fetch(urlee, {body: fData, method: 'post', mode: 'no-cors'})
 	.then((response) => {})
-/*
-	.then((response) => response.json())
-        .then((result) => {
-          if (result.result.toString() === 'OK') {
-		console.log('Seed sessions', result)
-		this.badRpcCall = 0;
-          } else {
-		this.badRpcCall = 1;
-		console.log('Connect to RPC server', result)
-		showNotification('RPC call error', this.snackbarTypes.danger); this.already = 0;
-		throw new TypeError('RPC err')
-          }
-        })
-*/
 	.catch((err) => {console.log('Fetch Error', err); this.badRpcCall = 1;});
 	
 	if (this.badRpcCall === 1) {showNotification('RPC error', this.snackbarTypes.danger); this.already = 0; return;}
@@ -257,18 +243,6 @@ export default class Binder extends Vue {
 			
 			await fetch(urlee, {body: formData, method: 'post', mode: 'no-cors'})
 			.then((response) => {})
-			/*
-			.then((response) => response.json())
-			.then((result) => {
-				if (result.result.toString() === 'OK') {
-					console.log('Update sessions', result)
-					this.badRpcCall = 0
-				} else {
-					showNotification('Some error', this.snackbarTypes.danger); this.already = 0;
-					throw new TypeError('Some err')
-				}
-			})
-			*/
 			.catch((err) => {console.log('Fetch Error', err); this.badRpcCall = 1;});
 
 			if (this.badRpcCall === 1) {showNotification('Some error', this.snackbarTypes.danger); this.already = 0; return;}

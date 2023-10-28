@@ -114,3 +114,5 @@ and [src/ChainState.js](./src/ChainState.js) for a query example.
 The [Account Selector](./src/AccountSelector.js) provides the user with a unified way to
 select their account from a keyring. If the Balances module is installed in the runtime,
 it also displays the user's token balance. It is included in the template already.
+
+get_bal.pl: check src/substrate-lib/SubstrateContext.js and search for baseURL
