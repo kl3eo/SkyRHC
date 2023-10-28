@@ -346,7 +346,7 @@ export default class Binder extends Vue {
       this.transfer_to = a[1];
       this.transfer.to = this.transfer_to;
     } else {
-      this.transfer_to = this.$store.state.callOptions.to.length ? this.$store.state.callOptions.to : '';
+      this.transfer_to = this.$store.state.callOptions.to && this.$store.state.callOptions.to.length ? this.$store.state.callOptions.to : '';
       this.transfer.to = this.transfer_to;
     }
     
@@ -355,7 +355,7 @@ export default class Binder extends Vue {
       this.transfer_a = b[1];
       this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000: 0;
     } else {
-      this.transfer_a = this.$store.state.callOptions.amount.length ? this.$store.state.callOptions.amount : '';
+      this.transfer_a = this.$store.state.callOptions.amount && this.$store.state.callOptions.amount.length ? this.$store.state.callOptions.amount : '';
       this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000 : 0;
     }
     

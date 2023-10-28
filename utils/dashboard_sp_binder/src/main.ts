@@ -9,6 +9,7 @@ import formatBalance from '@/utils/formatBalance'
 import { toString, toNumber, toPercent } from '@/utils/filters'
 import keyring from '@polkadot/ui-keyring';
 import './registerServiceWorker'
+// import VueMobileDetection from 'vue-mobile-detection';
 import App from './App.vue';
 import store from './store';
 import router from './router';
@@ -48,6 +49,7 @@ Vue.filter('toPercent', toPercent)
 
 Vue.use(VueClipboard);
 Vue.use(VueSweetalert2);
+// Vue.use(VueMobileDetection);
 
 Vue.config.productionTip = false;
 
