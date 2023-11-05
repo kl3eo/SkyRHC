@@ -169,7 +169,7 @@ export default class Binder extends Vue {
   getPrice() {
     let price = 0;
     let sess = this.getSession();
-    price = sess.length === 16 ? 5 : sess.length === 24 ? 50 : price;
+    // price = sess.length === 16 ? 5 : sess.length === 24 ? 50 : price;
     if (this.transfer_a != '') price = parseFloat(this.transfer_a);
     return price;
   }
@@ -206,7 +206,8 @@ export default class Binder extends Vue {
 		default: accountToConst = '5CkLgg19XECX98Lxam7kd4yZWyMqs6dG5Z686e2EkwtHqU86'; //xetr
 	}
 
-	this.rhc = this.transfer.amount ? this.transfer.amount : sess.length === 16 ? this.rhc5 : this.rhc50;
+	// this.rhc = this.transfer.amount ? this.transfer.amount : sess.length === 16 ? this.rhc5 : this.rhc50;
+	this.rhc = this.transfer.amount ? this.transfer.amount : 0;
 	accountToConst = this.transfer_to == '' ? accountToConst : this.transfer_to;
 	
 	const urlee = this.makeUrlee('tester.pl');
