@@ -328,10 +328,10 @@ export default class Binder extends Vue {
     if (this.$route.params.amount) {
       let b = this.$route.params.amount.split(':'); 
       this.transfer_a = b[1];
-      this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000: 0;
+      this.transfer.amount = this.transfer_a.length ? BigInt(parseFloat(this.transfer_a) * 1000000000000): 0;
     } else {
       this.transfer_a = this.$store.state.callOptions.amount && this.$store.state.callOptions.amount.length ? this.$store.state.callOptions.amount : '';
-      this.transfer.amount = this.transfer_a.length ? parseFloat(this.transfer_a) * 1000000000000 : 0;
+      this.transfer.amount = this.transfer_a.length ? BigInt(parseFloat(this.transfer_a) * 1000000000000) : 0;
     }
     
     if (this.$route.params.to && this.$route.params.amount) {

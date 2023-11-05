@@ -173,7 +173,7 @@ export default class Transfer extends Vue {
 // console.log('amount', this.$route.params.amount)
       let b = this.$route.params.amount.split(':'); 
       this.transfer_a = b[1];
-      this.transfer.amount = parseFloat(this.transfer_a) * 1000000000000;
+      this.transfer.amount = BigInt(parseFloat(this.transfer_a) * 1000000000000);
 // console.log('amount',this.transfer.amount, 'transfer_a', this.transfer_a);
     }
   }
