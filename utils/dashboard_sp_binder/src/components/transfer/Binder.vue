@@ -133,25 +133,36 @@ export default class Binder extends Vue {
   }
     
   getParentOrigin() {
-    const locationAreDisctint = (window.location !== window.parent.location);
-    const parentOrigin = ((locationAreDisctint ? document.referrer : document.location) || "").toString();
-
+    const locationAreDistinct = (window.location !== window.parent.location);
+    const parentOrigin = ((locationAreDistinct ? document.referrer : document.location) || "").toString();
+// console.log('Here parent origin is', parentOrigin, 'ref is', document.referrer, 'loc is', document.location)
     if (parentOrigin) {
-      return new URL(parentOrigin).origin;
+      let h = new URL(parentOrigin).origin
+// console.log('returning', h)
+      return h;
     }
 
     const currentLocation = document.location;
 
     if (currentLocation.ancestorOrigins && currentLocation.ancestorOrigins.length) {
+// console.log('returning anc', currentLocation.ancestorOrigins[0])
       return currentLocation.ancestorOrigins[0];
     }
 
+    let refo = this.getRefo();
+
+    if (refo.length) {
+// console.log('returning refo', refo)
+    return 'https://' + refo;
+    }
     return "";
   }
 
   getSession() {
     let sess = '';
-    let uri = window.location.href.split('?');
+    let uri0 = window.location.href.split('&');
+    let uri = uri0[0].split('?');
+
     if(uri.length == 2) {
 	let vars = uri[1].split('#');
 	vars.forEach(function(v) {
@@ -160,12 +171,30 @@ export default class Binder extends Vue {
 		sess = tmp[1];
 	});
     }
+
 //console.log('getSession, sess is', sess, 'saved sess is', this.$store.state.callOptions.session );
 
     if (sess.length == 0 && this.$store.state.callOptions.session) sess = this.$store.state.callOptions.session.length ? this.$store.state.callOptions.session : '';
     return sess;
   }
 
+  getRefo() {
+
+    let refo = '';
+    let refee = window.location.href.split('&');
+
+    if(refee.length == 2) {
+	let vars = refee[1].split('#');
+	vars.forEach(function(v) {
+	let tmp = v.split('=');
+	if(tmp.length == 2)
+		refo = tmp[1];
+	});
+    }
+console.log('getRefo, refo is', refo);
+    return refo;
+  }
+  
   getPrice() {
     let price = 0;
     let sess = this.getSession();
