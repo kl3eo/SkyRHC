@@ -8,10 +8,10 @@ export const apiEnabled = (to: any, from: any, next: any) => {
   } else {
     next({ name: 'landing' })
     Notification.open({
-      duration: 7000,
-      message: `API is not connected yet. <br> Please wait..trying to connect`,
+      duration: 3000,
+      message: `Please wait..trying to connect`,
       queue: false,
-      type: 'is-danger',
+      type: 'is-info',
       position: 'is-top-right',
     });
   }

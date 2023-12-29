@@ -78,7 +78,7 @@ export default class Transfer extends Vue {
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private local_denom = 1000000000000000; // 1 RHC is 10**15 units in balance
-  private limit = 1;
+  private limit = 100; // change ratio
   private balance = 0;
   private already = 0;
   private accountFrom: any = null;
@@ -86,14 +86,15 @@ export default class Transfer extends Vue {
   private avail = 0;
   private shipped = false;
   private trade_balance = 0;
-  public ratio = 1;
+  public ratio = 10; // change ratio
   public denom1 = 1000000000000; //10**12 for RHC
   public denom2 = 1000000000000000000; //10**18 for CLO and EXP
   
   // public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
   // private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
   public web3 = new Web3(new Web3.providers.HttpProvider('https://node.expanse.tech'))
-  private lauraBirdley = '0xd3f3f015873f9cd8d6698b688b109bcd33222037';
+  // private lauraBirdley = '0xd3f3f015873f9cd8d6698b688b109bcd33222037';
+  private lauraBirdley = '0xbe95577779a588f9de556ec0df2f32fa2eb01265'
 
   private snackbarTypes = {
     success: {
@@ -132,6 +133,7 @@ export default class Transfer extends Vue {
       const checkerPort = ''
       const genc = (hhh[0] === 'dussel' || hhh[0] === 'coins') ? '' : '/genc'
       const u = e === 'e' ? 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s : h + checkerPort + '/cgi' + genc + '/' + s;
+      console.log('urlee', u)
       return u
   }
     
