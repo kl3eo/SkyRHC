@@ -15,4 +15,4 @@ export default [
         component: Binder,
         beforeEnter: apiEnabled,
       },
-      ]
+]

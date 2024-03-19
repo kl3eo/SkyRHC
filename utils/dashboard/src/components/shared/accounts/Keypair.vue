@@ -204,7 +204,7 @@ export default class Keypair extends Vue {
     const { nonce, data: balance } = await api.query.system.account(this.address);
     this.balanceAvailable = balance.free.toString();
     this.nonce = nonce.toString();
-    console.log(this.balanceAvailable);
+    // console.log(this.balanceAvailable);
   }
 
   public mounted(): void {

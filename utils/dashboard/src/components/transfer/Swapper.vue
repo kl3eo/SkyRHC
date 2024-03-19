@@ -133,7 +133,7 @@ export default class Transfer extends Vue {
       const checkerPort = ''
       const genc = (hhh[0] === 'dussel' || hhh[0] === 'coins') ? '' : '/genc'
       const u = e === 'e' ? 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s : h + checkerPort + '/cgi' + genc + '/' + s;
-      console.log('urlee', u)
+      // console.log('urlee', u)
       return u
   }
     
@@ -265,11 +265,6 @@ export default class Transfer extends Vue {
               showNotification('Sent ' + pi / this.ratio + ' coins to ' + this.accountToEth +', TX: ' + result.result, this.snackbarTypes.success); this.already = 0; this.setAvail();
               this.accountFrom = null; this.handleAccountSelectionFrom(this.accountFrom);
               this.shipped = true;
-              // console.log('hi', this.$refs.dropdownObj.Balance);
-              // this.$refs.dropdownObj.keyringAccounts = [];
-              // this.$refs.dropdownObj.onSelectedAccount.selectedAccount=null;
-              
-
             } else {
               showNotification('Coins transaction error', this.snackbarTypes.danger);  this.already = 0; throw new TypeError('Coins transaction error');
             }
