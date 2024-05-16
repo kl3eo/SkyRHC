@@ -20,3 +20,7 @@ update harvester_status set value=null
 /opt/nvme2/docker/overlay2/(.....)/diff/usr/local/lib/python3.6/site-packages/scalecodec/type_registry/ with this "type_registry/"
 
 3.NB: on Enum 231 error, AFTER NEW RUNTIME change specs num in ./harvester/app/type_registry/skypirl.json
+
+4. if harvester workers don't start auto, (after crash last time)
+
+rm /mnt/sda/docker/volumes/51fd7c300a9384360be27c741a2e5b1fb5cde9d7505cbc0d5d1ce932c3028d2f/_data/celerybeat.pid
