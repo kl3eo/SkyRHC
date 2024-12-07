@@ -121,12 +121,13 @@ export default class Binder extends Vue {
   
   makeUrlee (s: string) {
       const h = this.getParentOrigin()
+      // console.log('parent', h)
       const reh = /https:\/\//gi
       const hh = h.replace(reh, '')
       const poh = hh.split(':')
       const hhh = hh.split('.')
-      const boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine') && hhh[1] === 'room-house');
-      const checkerPort = boo ? '' : ':8453'
+      const boo = hhh[0] === 'room-house' || ((hhh[0] === 'www' || hhh[0] === 'slotmachine' || hhh[0] === 'slotjs') && hhh[1] === 'room-house');
+      const checkerPort = boo ? '' : ''
       const genc = boo ? '' : '/genc'
       const u = 'https://' + poh[0] + checkerPort + '/cgi' + genc + '/' + s
       return u
@@ -160,6 +161,7 @@ export default class Binder extends Vue {
 
   getSession() {
     let sess = '';
+// console.log('getSession, wlh is', window.location.href);
     let uri0 = window.location.href.split('&');
     let uri = uri0[0].split('?');
 
@@ -172,7 +174,7 @@ export default class Binder extends Vue {
 	});
     }
 
-//console.log('getSession, sess is', sess, 'saved sess is', this.$store.state.callOptions.session );
+// console.log('getSession, sess is', sess, 'saved sess is', this.$store.state.callOptions.session );
 
     if (sess.length == 0 && this.$store.state.callOptions.session) sess = this.$store.state.callOptions.session.length ? this.$store.state.callOptions.session : '';
     return sess;
@@ -197,7 +199,7 @@ console.log('getRefo, refo is', refo);
   
   getPrice() {
     let price = 0;
-    let sess = this.getSession();
+    // let sess = this.getSession();
     // price = sess.length === 16 ? 5 : sess.length === 24 ? 50 : price;
     if (this.transfer_a != '') price = parseFloat(this.transfer_a);
     return price;
@@ -240,6 +242,7 @@ console.log('getRefo, refo is', refo);
 	accountToConst = this.transfer_to == '' ? accountToConst : this.transfer_to;
 	
 	const urlee = this.makeUrlee('tester.pl');
+	// console.log('urlee', urlee);
 	let fData = new FormData();
 	fData.append('sess', sess);
 	fData.append('pass', 'lol');
@@ -318,6 +321,7 @@ console.log('getRefo, refo is', refo);
   }
 
   public handleAccountSelectionFrom(account: KeyringPair) {
+    this.sender3();
     this.accountFrom = account;
   }
 
@@ -339,6 +343,11 @@ console.log('getRefo, refo is', refo);
   public sender2() {
 	const mess = { action: 'Bound' };
 	window.parent.postMessage(JSON.stringify(mess), '*');   
+  }
+
+  public sender3() {
+        const mess = { action: 'Rehash' };
+        window.parent.postMessage(JSON.stringify(mess), '*');
   }
   
   public externalURI() {

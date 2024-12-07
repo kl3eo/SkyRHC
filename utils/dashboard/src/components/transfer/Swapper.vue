@@ -1,15 +1,15 @@
 <template>
   <div id="transfer">
-   <h1>Swap RHC to EXP {{ ratio }}:1</h1>&nbsp;<span>Available for Swap: {{ avail }} coins. See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
+   <h1>Swap Pirl to {{ transfer.at }} or <a v-bind:href="`/#/swapper/at/:${transfer.alt}`" target="_blank">{{ transfer.alt }}</a> {{ ratio }}:1</h1>&nbsp;<span>Available: {{ avail > 0 ? avail : 'checking..' }} {{ avail > 0 ? transfer.at : '' }}</span>&nbsp;See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
     <DisabledInput v-if="conn.blockNumber"
       label="Best Block" :value="conn.blockNumber" />
 		<b-field v-else>
-			<p class="has-text-danger">You are not connected. 
+			<!-- p class="has-text-danger">You are not connected. 
 				<router-link :to="{ name: 'settings' }">
 				Go to settings and pick node</router-link>
-			</p>
+			</p -->
 		</b-field>
     <Dropdown v-if="!shipped" ref="dropdownObj" mode='accounts' :externalAddress="transfer.from" @selected="handleAccountSelectionFrom"/>
     <Balance :argument="{ name: 'balance', type: 'balance' }" @selected="handleValue"  />
@@ -67,6 +67,7 @@ export default class Transfer extends Vue {
   public theme: string = 'substrate';
   public tx: string = '';
   public password: string = '';
+  public lol: string = 'zyyz';
   public badRpcCall = false;
   public transfer: any = {
     from: null,
@@ -74,11 +75,14 @@ export default class Transfer extends Vue {
     to: null,
     toBalance: null,
     amountVisible: null,
-    amount: null };
+    amount: null,
+    at: 'EXP',
+    alt: 'UBQ' };
+//    alt: 'EXPC' };
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private local_denom = 1000000000000000; // 1 RHC is 10**15 units in balance
-  private limit = 100; // change ratio
+  private limit = 10; // change ratio
   private balance = 0;
   private already = 0;
   private accountFrom: any = null;
@@ -86,14 +90,12 @@ export default class Transfer extends Vue {
   private avail = 0;
   private shipped = false;
   private trade_balance = 0;
-  public ratio = 10; // change ratio
-  public denom1 = 1000000000000; //10**12 for RHC
-  public denom2 = 1000000000000000000; //10**18 for CLO and EXP
-  
-  // public web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.callisto.network'))
-  // private lauraBirdley = '0xe4cceea949b751577038e92bf829d91a8f03671f';
-  public web3 = new Web3(new Web3.providers.HttpProvider('https://node.expanse.tech'))
-  // private lauraBirdley = '0xd3f3f015873f9cd8d6698b688b109bcd33222037';
+  private ratio = 1; // change ratio
+  private denom1 = 1000000000000; //10**12 for RHC
+  private denom2 = 1000000000000000000; //10**18 for CLO and EXP
+  private rpc = 'https://wien.room-house.com'
+  // private rpc = 'https://node.expanse.tech' 
+  public web3 = new Web3(new Web3.providers.HttpProvider(this.rpc))
   private lauraBirdley = '0xbe95577779a588f9de556ec0df2f32fa2eb01265'
 
   private snackbarTypes = {
@@ -116,11 +118,6 @@ export default class Transfer extends Vue {
     return urlBuilderTransaction(value, 
       this.$store.state.explorer.chain, 
       this.$store.state.explorer.provider)
-  }
-  
-  newWsProvider () {
-      let provider = new Web3.providers.WebsocketProvider('wss://rpc.callisto.network')
-      return provider
   }
   
   makeUrlee (s: string, e: string) {
@@ -215,10 +212,11 @@ export default class Transfer extends Vue {
         // seed lw_sessions
 	  
         let fData = new FormData();
-        fData.append('pass', 'lol');
+        fData.append('pass', this.lol);
         fData.append('acc_id', this.accountFrom.address);
         fData.append('addr', this.accountToEth);
-	  
+        fData.append('rpc', this.rpc);
+		  
         const urlee_sessions = this.makeUrlee('tester_lw.pl','i');
         await fetch(urlee_sessions, {body: fData, method: 'post', credentials: 'include'})
         .then( (response) => response.json())
@@ -230,7 +228,7 @@ export default class Transfer extends Vue {
             throw new TypeError('RPC err');
           }
         })
-        .catch((err) => { console.log('Fetch fData Error', err); this.badRpcCall = true; showNotification('RPC server connect failed!', this.snackbarTypes.danger); this.already = 0; return });
+        .catch((err) => { console.log('Fetch fData Error', err); this.badRpcCall = true; showNotification('PLEASE clear the browser CACHE and reload this page to CONTINUE!', this.snackbarTypes.danger); this.already = 0; return });
     
         if (this.badRpcCall === true) return;
 	  
@@ -253,11 +251,12 @@ export default class Transfer extends Vue {
             // update lw_sessions on first part of swap success
 			
             let fData3 = new FormData();
-            fData3.append('pass', 'lol');
+            fData3.append('pass', this.lol);
             fData3.append('bhash', status.asInBlock.toHex());
             fData3.append('txhash', thx);
             fData3.append('acc_id', this.accountFrom.address);
-			
+            fData3.append('rpc', this.rpc);
+	    			
             await fetch(urlee_sessions, {body: fData3, method: 'post', credentials: 'include'})
             .then( (response) => response.json())
             .then( (result) => { console.log('Update lw_sessions', result); 
@@ -331,6 +330,19 @@ export default class Transfer extends Vue {
     }
     if (this.$route.params.to) {
       this.transfer.to = this.$route.params.to;
+    }
+    if (this.$route.params.at) {
+      let a = this.$route.params.at.split(':'); 
+      this.transfer.at = a[1];
+/*      this.transfer.alt = this.transfer.at === 'EXPC' ? 'EXP' : this.transfer.alt;
+      this.rpc = this.transfer.at === 'EXPC' ? 'https://paris.room-house.com' : this.rpc
+      this.web3 = this.transfer.at === 'EXPC' ? new Web3(new Web3.providers.HttpProvider('https://paris.room-house.com')) : this.web3
+      this.ratio = this.transfer.at === 'EXPC' ? 5 : this.ratio
+*/
+      this.transfer.alt = this.transfer.at === 'UBQ' ? 'EXP' : this.transfer.alt;
+      this.rpc = this.transfer.at === 'UBQ' ? 'https://rpc.octano.dev' : this.rpc
+      this.web3 = this.transfer.at === 'UBQ' ? new Web3(new Web3.providers.HttpProvider('https://rpc.octano.dev')) : this.web3
+      this.ratio = this.transfer.at === 'UBQ' ? 1 : this.ratio
     }
   }
 

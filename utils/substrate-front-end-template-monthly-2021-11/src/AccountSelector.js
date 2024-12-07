@@ -81,8 +81,8 @@ function Main (props) {
       <Container>
         <Menu.Menu position='right' style={{ alignItems: 'center' }}>
           { !accountSelected
-            ? <span style={{ marginRight: '5px' }}>
-              <button style={{ paddingLeft: '8px', paddingRight: '8px', minWidth: '84px' }} onClick={sender}>TICKET</button>
+            ? <span style={{ marginRight: '3px', marginLeft: '10px' }}>
+              <button style={{ paddingLeft: '2px', paddingRight: '2px', minWidth: '84px', cursor: 'pointer' }} onClick={sender}>BUY TICKET</button>
             </span>
             : null }
           <CopyToClipboard text={accountSelected}>
@@ -95,7 +95,7 @@ function Main (props) {
             />
           </CopyToClipboard>
           <Dropdown
-            style={{ backgroundColor: 'transparent', color: '#aaa', border: '1px solid grey', marginRight: '4px' }}
+            style={{ backgroundColor: 'transparent', color: '#aaa', border: '1px solid grey', marginRight: '2px' }}
             search
             selection
             clearable
