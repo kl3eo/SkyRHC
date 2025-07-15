@@ -1,6 +1,6 @@
 <template>
   <div id="transfer">
-   <h1>Swap Pirl to {{ transfer.at }} or <a v-bind:href="`/#/swapper/at/:${transfer.alt}`" target="_blank">{{ transfer.alt }}</a> {{ ratio }}:1</h1>&nbsp;<span>Available: {{ avail > 0 ? avail : 'checking..' }} {{ avail > 0 ? transfer.at : '' }}</span>&nbsp;See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
+   <h1>Swap RHC to {{ transfer.at }} or <a v-bind:href="`/#/swapper/at/:${transfer.alt}`" target="_blank">{{ transfer.alt }}</a> {{ ratio }}:1</h1>&nbsp;<span>Available: {{ avail > 0 ? avail : 'checking..' }} {{ avail > 0 ? transfer.at : '' }}</span>&nbsp;See <a href='https://coins.room-house.com/hist' target=new>History</a></span>
     <DisabledInput v-if="conn.chainName" 
       label="Chain" :value="conn.chainName" />
     <DisabledInput v-if="conn.blockNumber"
@@ -67,7 +67,7 @@ export default class Transfer extends Vue {
   public theme: string = 'substrate';
   public tx: string = '';
   public password: string = '';
-  public lol: string = 'zyyz';
+  public lol: string = 'lollol';
   public badRpcCall = false;
   public transfer: any = {
     from: null,
@@ -77,12 +77,12 @@ export default class Transfer extends Vue {
     amountVisible: null,
     amount: null,
     at: 'EXP',
-    alt: 'UBQ' };
+    alt: 'ETC' };
 //    alt: 'EXPC' };
   public keyringAccounts: any = [];
   public conn: any = { blockNumber: '', chainName: ''};
   private local_denom = 1000000000000000; // 1 RHC is 10**15 units in balance
-  private limit = 10; // change ratio
+  private limit = 2; // change ratio
   private balance = 0;
   private already = 0;
   private accountFrom: any = null;
@@ -176,9 +176,10 @@ export default class Transfer extends Vue {
   }
   
   public async shipIt(): Promise<void> {
-     
-      if (this.balance > this.limit * this.local_denom) {showNotification('Swap cannot be > '+this.limit, this.snackbarTypes.danger); return;}
-      if (this.balance > this.avail * this.local_denom) {showNotification('Swap cannot be > '+this.avail, this.snackbarTypes.danger); return;}
+//console.log('Here balance is', this.balance,'limit is',this.limit,'avail is',this.avail,'denom is', this.local_denom);
+
+      if (this.balance > this.limit * this.local_denom ) {showNotification('Swap cannot be > '+this.limit, this.snackbarTypes.danger); return;}
+      if (this.balance > this.avail * this.local_denom * this.ratio) {showNotification('Swap cannot be > '+this.avail, this.snackbarTypes.danger); return;}
       if (!(this.balance > 0)) {showNotification('Swap must be > 0!', this.snackbarTypes.danger); return;}
       if (!/0x[a-zA-Z0-9]{40}/.test(this.accountToEth)) {showNotification('Send address is not valid!', this.snackbarTypes.danger); return;}
       
@@ -223,7 +224,10 @@ export default class Transfer extends Vue {
         .then((result) => {
           if (result.result.toString() === 'OK') {
             console.log('Seed lw_sessions', result); this.badRpcCall = false;
-          } else {
+          } else if (result.result.toString() === 'HI') {
+            showNotification('Error: not allowed. Please contact admin', this.snackbarTypes.danger);
+	    throw new TypeError('Error: not allowed. Please contact admins!');
+	  } else {
             console.log('Connect to RPC server', result);
             throw new TypeError('RPC err');
           }
@@ -265,7 +269,7 @@ export default class Transfer extends Vue {
               this.accountFrom = null; this.handleAccountSelectionFrom(this.accountFrom);
               this.shipped = true;
             } else {
-              showNotification('Coins transaction error', this.snackbarTypes.danger);  this.already = 0; throw new TypeError('Coins transaction error');
+              // showNotification('Coins transaction error', this.snackbarTypes.danger);this.already = 0;throw new TypeError('Coins transaction error');
             }
             })	
             .catch(function(err) {console.log('Fetch fData3 Error', err);});
@@ -334,15 +338,25 @@ export default class Transfer extends Vue {
     if (this.$route.params.at) {
       let a = this.$route.params.at.split(':'); 
       this.transfer.at = a[1];
-/*      this.transfer.alt = this.transfer.at === 'EXPC' ? 'EXP' : this.transfer.alt;
+
+/*    this.transfer.alt = this.transfer.at === 'EXPC' ? 'EXP' : this.transfer.alt;
       this.rpc = this.transfer.at === 'EXPC' ? 'https://paris.room-house.com' : this.rpc
       this.web3 = this.transfer.at === 'EXPC' ? new Web3(new Web3.providers.HttpProvider('https://paris.room-house.com')) : this.web3
       this.ratio = this.transfer.at === 'EXPC' ? 5 : this.ratio
 */
+/*
       this.transfer.alt = this.transfer.at === 'UBQ' ? 'EXP' : this.transfer.alt;
-      this.rpc = this.transfer.at === 'UBQ' ? 'https://rpc.octano.dev' : this.rpc
-      this.web3 = this.transfer.at === 'UBQ' ? new Web3(new Web3.providers.HttpProvider('https://rpc.octano.dev')) : this.web3
+      // this.rpc = this.transfer.at === 'UBQ' ? 'https://rpc.octano.dev' : this.rpc
+      // this.web3 = this.transfer.at === 'UBQ' ? new Web3(new Web3.providers.HttpProvider('https://rpc.octano.dev')) : this.web3
+      this.rpc = this.transfer.at === 'UBQ' ? 'https://ubiq.room-house.com' : this.rpc
+      this.web3 = this.transfer.at === 'UBQ' ? new Web3(new Web3.providers.HttpProvider('https://ubiq.room-house.com')) : this.web3
       this.ratio = this.transfer.at === 'UBQ' ? 1 : this.ratio
+*/
+      this.transfer.alt = this.transfer.at === 'ETC' ? 'EXP' : this.transfer.alt;
+      this.rpc = this.transfer.at === 'ETC' ? 'https://africa.room-house.com' : this.rpc
+      this.web3 = this.transfer.at === 'ETC' ? new Web3(new Web3.providers.HttpProvider('https://africa.room-house.com')) : this.web3
+      this.ratio = this.transfer.at === 'ETC' ? 100000 : this.ratio
+      this.limit = this.transfer.at === 'ETC' ? 50 : this.limit
     }
   }
 
